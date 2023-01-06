@@ -1080,7 +1080,7 @@ ohos_source_set("ssl_source") {
 
 ohos_shared_library("libssl_shared") {
   deps = [
-    ":crypto_source",
+    ":libcrypto_shared",
     ":ssl_source",
   ]
   output_name = "libssl_openssl"
