@@ -1083,10 +1083,21 @@ ohos_shared_library("libssl_shared") {
     ":crypto_source",
     ":ssl_source",
   ]
+
+  if (is_mingw) {
+    lib_dirs = [ "//prebuilts/mingw-w64/ohos/linux-x86_64/clang-mingw/x86_64-w64-mingw32/lib" ]
+    libs = [ "ws2_32" ]
+  }
+
   output_name = "libssl_openssl"
   subsystem_name = "developtools"
   part_name = "profiler"
-  public_configs = [ ":ssl_config_public" ]
+
+  public_configs = [
+    ":crypto_config_public",
+    ":ssl_config_public",
+  ]
+
   remove_configs = [ "//build/config/coverage:default_coverage" ]
   install_images = [ "system" ]
 }
