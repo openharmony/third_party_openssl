@@ -942,6 +942,10 @@ if (is_mingw || is_mac) {
 }
 
 ohos_shared_library("libcrypto_shared") {
+  if (is_mingw) {
+    lib_dirs = [ "//prebuilts/mingw-w64/ohos/linux-x86_64/clang-mingw/x86_64-w64-mingw32/lib" ]
+    libs = [ "ws2_32" ]
+  }
   deps = [ ":crypto_source" ]
   output_name = "libcrypto_openssl"
   subsystem_name = "security"
@@ -1080,7 +1084,7 @@ ohos_source_set("ssl_source") {
 
 ohos_shared_library("libssl_shared") {
   deps = [
-    ":crypto_source",
+    ":libcrypto_shared",
     ":ssl_source",
   ]
 
