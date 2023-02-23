@@ -1,0 +1,100 @@
+-I.
+-Iinclude
+-Iproviders/common/include
+-Iproviders/implementations/include
+
+-DNDEBUG
+-DOPENSSL_BUILDING_OPENSSL
+-DOPENSSL_CPUID_OBJ
+-DOPENSSL_PIC
+-DOPENSSLDIR="\"/usr/local/ssl\""
+
+-Wa,--noexecstack
+-Wall
+
+-DECP_NISTZ256_ASM
+-DKECCAK1600_ASM
+-DOPENSSL_BN_ASM_MONT
+-DPOLY1305_ASM
+-DSHA1_ASM
+-DSHA256_ASM
+-DSHA512_ASM
+
+-c
+crypto/aes/aes_cfb.c
+crypto/aes/libcrypto-shlib-aes_cfb.d.tmp
+gcc
+-MF
+-MMD
+-MT
+-o
+-O3
+
+$ ls *gcc.txt | xargs -I {} sh -c 'echo {} ; diff common.txt {} | grep "^>"'
+
+linux-aarch64.gcc.txt
+> crypto/aes/libcrypto-shlib-aes_cfb.o
+> -DENGINESDIR="\"/usr/local/lib/engines-3\""
+> -DMODULESDIR="\"/usr/local/lib/ossl-modules\""
+> -DOPENSSL_USE_NODELETE
+> -DVPAES_ASM
+> -fPIC
+> -pthread
+
+
+linux-armv4.gcc.txt
+> crypto/aes/libcrypto-shlib-aes_cfb.o
+> -DAES_ASM
+> -DBSAES_ASM
+> -DENGINESDIR="\"/usr/local/lib/engines-3\""
+> -DGHASH_ASM
+> -DMODULESDIR="\"/usr/local/lib/ossl-modules\""
+> -DOPENSSL_BN_ASM_GF2m
+> -DOPENSSL_USE_NODELETE
+> -fPIC
+> -pthread
+
+
+linux-x86_64.gcc.txt
+> crypto/aes/libcrypto-shlib-aes_cfb.o
+> -DAES_ASM
+> -DBSAES_ASM
+> -DCMLL_ASM
+> -DENGINESDIR="\"/usr/local/lib64/engines-3\""
+> -DGHASH_ASM
+> -DL_ENDIAN
+> -DMD5_ASM
+> -DMODULESDIR="\"/usr/local/lib64/ossl-modules\""
+> -DOPENSSL_BN_ASM_GF2m
+> -DOPENSSL_BN_ASM_MONT5
+> -DOPENSSL_IA32_SSE2
+> -DOPENSSL_USE_NODELETE
+> -DVPAES_ASM
+> -DWHIRLPOOL_ASM
+> -DX25519_ASM
+> -fPIC
+> -m64
+> -pthread
+
+
+mingw64.gcc.txt
+> crypto/aes/libcrypto-shlib-aes_cfb.obj
+> -D_MT
+> -D_UNICODE
+> -DAES_ASM
+> -DBSAES_ASM
+> -DCMLL_ASM
+> -DENGINESDIR="\"/usr/local/lib64/engines-3\""
+> -DGHASH_ASM
+> -DL_ENDIAN
+> -DMD5_ASM
+> -DMODULESDIR="\"/usr/local/lib64/ossl-modules\""
+> -DOPENSSL_BN_ASM_GF2m
+> -DOPENSSL_BN_ASM_MONT5
+> -DOPENSSL_IA32_SSE2
+> -DUNICODE
+> -DVPAES_ASM
+> -DWHIRLPOOL_ASM
+> -DWIN32_LEAN_AND_MEAN
+> -DX25519_ASM
+> -m64
