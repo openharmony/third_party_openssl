@@ -184,42 +184,32 @@ crypto_config_mingw64_cflags = [
   "-DX25519_ASM",
 ]
 
+crypto_config_current_platform_include_dirs = []
+crypto_config_current_platform_cflags = []
+if (current_cpu == "arm" && !(current_os == "linux" || host_os == "mac")) {
+  crypto_config_current_platform_include_dirs += crypto_config_linux_armv4_include_dirs
+  crypto_config_current_platform_cflags += crypto_config_linux_armv4_cflags
+} else if (current_cpu == "arm64" &&
+            !(current_os == "linux" || host_os == "mac")) {
+  crypto_config_current_platform_include_dirs += crypto_config_linux_aarch64_include_dirs
+  crypto_config_current_platform_cflags += crypto_config_linux_aarch64_cflags
+} else if (current_cpu == "x64" && current_os != "mingw") {
+  crypto_config_current_platform_include_dirs += crypto_config_linux_x86_64_include_dirs
+  crypto_config_current_platform_cflags += crypto_config_linux_x86_64_cflags
+} else if (is_mingw) {
+  crypto_config_current_platform_include_dirs += crypto_config_mingw64_include_dirs
+  crypto_config_current_platform_cflags += crypto_config_mingw64_cflags
+}
+
 config("crypto_config") {
-  include_dirs = crypto_config_common_include_dirs
-  cflags = crypto_config_common_cflags
-  if (current_cpu == "arm" && !(current_os == "linux" || host_os == "mac")) {
-    include_dirs += crypto_config_linux_armv4_include_dirs
-    cflags += crypto_config_linux_armv4_cflags
-  } else if (current_cpu == "arm64" &&
-             !(current_os == "linux" || host_os == "mac")) {
-    include_dirs += crypto_config_linux_aarch64_include_dirs
-    cflags += crypto_config_linux_aarch64_cflags
-  } else if (current_cpu == "x64" && current_os != "mingw") {
-    include_dirs += crypto_config_linux_x86_64_include_dirs
-    cflags += crypto_config_linux_x86_64_cflags
-  } else if (is_mingw) {
-    include_dirs += crypto_config_mingw64_include_dirs
-    cflags += crypto_config_mingw64_cflags
-  }
+  include_dirs = crypto_config_common_include_dirs + crypto_config_current_platform_include_dirs
+  cflags = crypto_config_common_cflags + crypto_config_current_platform_cflags
 }
 
 config("crypto_config_public") {
-  include_dirs = [ "./include" ]
-  cflags = crypto_config_common_cflags
-  if (current_cpu == "arm" && !(current_os == "linux" || host_os == "mac")) {
-    include_dirs += crypto_config_linux_armv4_include_dirs
-    cflags += crypto_config_linux_armv4_cflags
-  } else if (current_cpu == "arm64" &&
-             !(current_os == "linux" || host_os == "mac")) {
-    include_dirs += crypto_config_linux_aarch64_include_dirs
-    cflags += crypto_config_linux_aarch64_cflags
-  } else if (current_cpu == "x64" && current_os != "mingw") {
-    include_dirs += crypto_config_linux_x86_64_include_dirs
-    cflags += crypto_config_linux_x86_64_cflags
-  } else if (is_mingw) {
-    include_dirs += crypto_config_mingw64_include_dirs
-    cflags += crypto_config_mingw64_cflags
-  }
+  include_dirs = [ "include" ]
+  include_dirs += crypto_config_current_platform_include_dirs
+  cflags = crypto_config_common_cflags + crypto_config_current_platform_cflags
 }
 
 libcommon_common_sources = [
@@ -1364,91 +1354,25 @@ unused_variables += libdefault_linux_x86_64_sources
 unused_variables += libdefault_mingw64_sources
 
 config("ssl_config") {
-  include_dirs = [
-    "./",
-    "./crypto/include",
-    "./include",
-    "./crypto/modes",
-  ]
-  cflags = [
-    "-DNDEBUG",
-    "-DOPENSSL_NO_STATIC_ENGINE",
-    "-DOPENSSL_PIC",
-    "-Wall",
-    "-pthread",
-    "-fPIC",
-    "-DOPENSSL_USE_NODELETE",
-    "-DOPENSSLDIR=\"\"",
-    "-DENGINESDIR=\"\"",
-    "-DOPENSSL_NO_BF",
-    "-DOPENSSL_NO_CAMELLIA",
-    "-DOPENSSL_NO_CAST",
-    "-DOPENSSL_NO_CT",
-    "-DOPENSSL_NO_MD2",
-    "-DOPENSSL_NO_RC5",
-    "-DOPENSSL_NO_RC2",
-    "-DOPENSSL_NO_RIPEMD",
-    "-DOPENSSL_NO_RMD160",
-    "-DOPENSSL_NO_SSL2",
-    "-DOPENSSL_NO_SSL3",
-    "-DOPENSSL_NO_SSL3_METHOD",
-  ]
-
-  if (current_cpu == "arm" && host_os != "mac") {
-    cflags += [ "-DOPENSSL_ARM_PLATFORM" ]
-  } else if (current_cpu == "arm64" &&
-             !(current_os == "linux" || host_os == "mac")) {
-    cflags += [ "-DOPENSSL_ARM64_PLATFORM" ]
-  } else if (current_cpu == "x64" && current_os != "mingw") {
-    cflags += [ "-DOPENSSL_X86_64_PLATFORM" ]
-  } else if (is_mingw) {
-    cflags -= [ "-fPIC" ]
-    cflags += [
-      "-m64",
-      "-DL_ENDIAN",
-      "-DUNICODE",
-      "-D_UNICODE",
-      "-DWIN32_LEAN_AND_MEAN",
-      "-D_MT",
-      "-MMD",
-      "-MF",
-      "-c",
-    ]
-    defines = [ "WINDOWS_PLATFORM" ]
-  } else if (host_os == "mac") {
-    cflags += [
-      "-O3",
-      "-DL_ENDIAN",
-      "-D_REENTRAN",
-      "-MMD",
-      "-MF",
-      "-c",
-    ]
-    defines = [ "MAC_PLATFORM" ]
-  } else {
-    cflags += [ "-DOPENSSL_ARM64_PLATFORM" ]
-  }
+  include_dirs = crypto_config_common_include_dirs + crypto_config_current_platform_include_dirs
+  cflags = crypto_config_common_cflags + crypto_config_current_platform_cflags
 }
 
 config("ssl_config_public") {
-  include_dirs = [ "//third_party/openssl/include" ]
+  include_dirs = [ "include" ]
+  include_dirs += crypto_config_current_platform_include_dirs
+  cflags = crypto_config_common_cflags + crypto_config_current_platform_cflags
 }
 
 ohos_source_set("ssl_source") {
   sources = [
+    "crypto/packet.c",
     "ssl/bio_ssl.c",
     "ssl/d1_lib.c",
     "ssl/d1_msg.c",
     "ssl/d1_srtp.c",
     "ssl/methods.c",
-    "ssl/packet.c",
     "ssl/pqueue.c",
-    "ssl/record/dtls1_bitmap.c",
-    "ssl/record/rec_layer_d1.c",
-    "ssl/record/rec_layer_s3.c",
-    "ssl/record/ssl3_buffer.c",
-    "ssl/record/ssl3_record.c",
-    "ssl/record/ssl3_record_tls13.c",
     "ssl/s3_cbc.c",
     "ssl/s3_enc.c",
     "ssl/s3_lib.c",
@@ -1458,14 +1382,29 @@ ohos_source_set("ssl_source") {
     "ssl/ssl_ciph.c",
     "ssl/ssl_conf.c",
     "ssl/ssl_err.c",
+    "ssl/ssl_err_legacy.c",
     "ssl/ssl_init.c",
     "ssl/ssl_lib.c",
     "ssl/ssl_mcnf.c",
     "ssl/ssl_rsa.c",
+    "ssl/ssl_rsa_legacy.c",
     "ssl/ssl_sess.c",
     "ssl/ssl_stat.c",
     "ssl/ssl_txt.c",
     "ssl/ssl_utst.c",
+    "ssl/t1_enc.c",
+    "ssl/t1_lib.c",
+    "ssl/t1_trce.c",
+    "ssl/tls13_enc.c",
+    "ssl/tls_depr.c",
+    "ssl/tls_srp.c",
+    "ssl/record/dtls1_bitmap.c",
+    "ssl/record/rec_layer_d1.c",
+    "ssl/record/rec_layer_s3.c",
+    "ssl/record/ssl3_buffer.c",
+    "ssl/record/ssl3_record.c",
+    "ssl/record/ssl3_record_tls13.c",
+    "ssl/record/tls_pad.c",
     "ssl/statem/extensions.c",
     "ssl/statem/extensions_clnt.c",
     "ssl/statem/extensions_cust.c",
@@ -1475,14 +1414,10 @@ ohos_source_set("ssl_source") {
     "ssl/statem/statem_dtls.c",
     "ssl/statem/statem_lib.c",
     "ssl/statem/statem_srvr.c",
-    "ssl/t1_enc.c",
-    "ssl/t1_lib.c",
-    "ssl/t1_trce.c",
-    "ssl/tls13_enc.c",
-    "ssl/tls_srp.c",
   ]
 
-  public_configs = [ ":ssl_config" ]
+  configs = [ ":ssl_config" ]
+  public_configs = [ ":ssl_config_public" ]
 }
 
 ohos_static_library("libssl_static") {
@@ -1490,14 +1425,14 @@ ohos_static_library("libssl_static") {
     ":ssl_source",
     ":libcrypto_shared",
   ]
-  public_configs = [ ":crypto_config_public" ]
+  public_configs = [ ":ssl_config_public" ]
   complete_static_lib = true
 }
 
 ohos_shared_library("libssl_shared") {
   deps = [
-    ":libcrypto_shared",
     ":ssl_source",
+    ":libcrypto_shared",
   ]
 
   if (is_mingw) {
