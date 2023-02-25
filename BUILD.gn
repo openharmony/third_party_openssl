@@ -164,12 +164,11 @@ crypto_config_mingw64_include_dirs = [
   "build_all_generated/mingw64/providers/common/include/prov",
 ]
 
-crypto_config_mingw64_cflags = [
+crypto_config_mingw64_public_cflags = [
   # !!!              WARNING              !!!
   # !!! DO NOT ADD -DWIN32_LEAN_AND_MEAN  !!!
   # !!! DO NOT DEFINE WIN32_LEAN_AND_MEAN !!!
   # !!!              WARNING              !!!
-
   "-DL_ENDIAN",
   "-D_MT",
   "-DOPENSSL_IA32_SSE2",
@@ -196,32 +195,46 @@ crypto_config_mingw64_cflags = [
   "-DX25519_ASM",
 ]
 
+crypto_config_mingw64_internal_cflags = [
+  # !!!             WARNING             !!!
+  # !!! MUST ADD -DWIN32_LEAN_AND_MEAN  !!!
+  # !!! MUST DEFINE WIN32_LEAN_AND_MEAN !!!
+  # !!!             WARNING             !!!
+  "-DWIN32_LEAN_AND_MEAN",
+]
+crypto_config_mingw64_internal_cflags += crypto_config_mingw64_public_cflags
+
 crypto_config_current_platform_include_dirs = []
-crypto_config_current_platform_cflags = []
+crypto_config_current_platform_internal_cflags = []
+crypto_config_current_platform_public_cflags = []
 if (current_cpu == "arm" && !(current_os == "linux" || host_os == "mac")) {
   crypto_config_current_platform_include_dirs += crypto_config_linux_armv4_include_dirs
-  crypto_config_current_platform_cflags += crypto_config_linux_armv4_cflags
+  crypto_config_current_platform_internal_cflags += crypto_config_linux_armv4_cflags
+  crypto_config_current_platform_public_cflags += crypto_config_linux_armv4_cflags
 } else if (current_cpu == "arm64" &&
             !(current_os == "linux" || host_os == "mac")) {
   crypto_config_current_platform_include_dirs += crypto_config_linux_aarch64_include_dirs
-  crypto_config_current_platform_cflags += crypto_config_linux_aarch64_cflags
+  crypto_config_current_platform_internal_cflags += crypto_config_linux_aarch64_cflags
+  crypto_config_current_platform_public_cflags += crypto_config_linux_aarch64_cflags
 } else if (current_cpu == "x64" && current_os != "mingw") {
   crypto_config_current_platform_include_dirs += crypto_config_linux_x86_64_include_dirs
-  crypto_config_current_platform_cflags += crypto_config_linux_x86_64_cflags
+  crypto_config_current_platform_internal_cflags += crypto_config_linux_x86_64_cflags
+  crypto_config_current_platform_public_cflags += crypto_config_linux_x86_64_cflags
 } else if (is_mingw) {
   crypto_config_current_platform_include_dirs += crypto_config_mingw64_include_dirs
-  crypto_config_current_platform_cflags += crypto_config_mingw64_cflags
+  crypto_config_current_platform_internal_cflags += crypto_config_mingw64_internal_cflags
+  crypto_config_current_platform_public_cflags += crypto_config_mingw64_public_cflags
 }
 
 config("crypto_config") {
   include_dirs = crypto_config_common_include_dirs + crypto_config_current_platform_include_dirs
-  cflags = crypto_config_common_cflags + crypto_config_current_platform_cflags + openssl_internal_cflags
+  cflags = crypto_config_common_cflags + crypto_config_current_platform_internal_cflags + openssl_internal_cflags
 }
 
 config("crypto_config_public") {
   include_dirs = [ "include" ]
   include_dirs += crypto_config_current_platform_include_dirs
-  cflags = crypto_config_common_cflags + crypto_config_current_platform_cflags
+  cflags = crypto_config_common_cflags + crypto_config_current_platform_public_cflags
 }
 
 libcommon_common_sources = [
@@ -1353,7 +1366,8 @@ unused_variables += crypto_config_linux_aarch64_cflags
 unused_variables += crypto_config_linux_x86_64_include_dirs
 unused_variables += crypto_config_linux_x86_64_cflags
 unused_variables += crypto_config_mingw64_include_dirs
-unused_variables += crypto_config_mingw64_cflags
+unused_variables += crypto_config_mingw64_internal_cflags
+unused_variables += crypto_config_mingw64_public_cflags
 unused_variables += libcommon_common_sources
 unused_variables += libcommon_linux_armv4_sources
 unused_variables += libcommon_linux_aarch64_sources
@@ -1367,13 +1381,13 @@ unused_variables += libdefault_mingw64_sources
 
 config("ssl_config") {
   include_dirs = crypto_config_common_include_dirs + crypto_config_current_platform_include_dirs
-  cflags = crypto_config_common_cflags + crypto_config_current_platform_cflags + openssl_internal_cflags
+  cflags = crypto_config_common_cflags + crypto_config_current_platform_internal_cflags + openssl_internal_cflags
 }
 
 config("ssl_config_public") {
   include_dirs = [ "include" ]
   include_dirs += crypto_config_current_platform_include_dirs
-  cflags = crypto_config_common_cflags + crypto_config_current_platform_cflags
+  cflags = crypto_config_common_cflags + crypto_config_current_platform_public_cflags
 }
 
 ohos_source_set("ssl_source") {
