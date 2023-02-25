@@ -13,34 +13,8 @@
 
 import("//build/ohos.gni")
 
-# Only use this to set/unset some cflags, use "platform" variable in gn template to add
-# source code for Windows.
-
-crypto_config_common_include_dirs = [
-  ".",
-  "apps/include",
-  "crypto",
-  "crypto/bn",
-  "crypto/ec",
-  "crypto/ec/curve448",
-  "crypto/modes",
-  "crypto/rsa",
-  "include",
-  "providers/common/include",
-  "providers/common/include/prov",
-  "providers/implementations/include",
-]
-
-crypto_config_common_cflags = [
+openssl_internal_cflags = [
   "-Wall",
-  "-Wa,--noexecstack",
-  "-DNDEBUG",
-  "-DOPENSSL_BUILDING_OPENSSL",
-  "-DOPENSSL_CPUID_OBJ",
-  "-DOPENSSL_PIC",
-  "-DENGINESDIR=\"\"",
-  "-DMODULESDIR=\"\"",
-  "-DOPENSSLDIR=\"\"",
 
   # ../../third_party/openssl/crypto/o_str.c:309:9: error: incompatible integer to pointer conversion assigning to 'char *' from 'int' [-Werror,-Wint-conversion]
   #     err = strerror_r(errnum, buf, buflen);
@@ -62,6 +36,32 @@ crypto_config_common_cflags = [
   #         ^
   # 1 error generated.
   "-Wno-error=macro-redefined",
+]
+
+crypto_config_common_include_dirs = [
+  ".",
+  "apps/include",
+  "crypto",
+  "crypto/bn",
+  "crypto/ec",
+  "crypto/ec/curve448",
+  "crypto/modes",
+  "crypto/rsa",
+  "include",
+  "providers/common/include",
+  "providers/common/include/prov",
+  "providers/implementations/include",
+]
+
+crypto_config_common_cflags = [
+  "-Wa,--noexecstack",
+  "-DNDEBUG",
+  "-DOPENSSL_BUILDING_OPENSSL",
+  "-DOPENSSL_CPUID_OBJ",
+  "-DOPENSSL_PIC",
+  "-DENGINESDIR=\"\"",
+  "-DMODULESDIR=\"\"",
+  "-DOPENSSLDIR=\"\"",
 ]
 
 crypto_config_linux_armv4_include_dirs = [
@@ -215,7 +215,7 @@ if (current_cpu == "arm" && !(current_os == "linux" || host_os == "mac")) {
 
 config("crypto_config") {
   include_dirs = crypto_config_common_include_dirs + crypto_config_current_platform_include_dirs
-  cflags = crypto_config_common_cflags + crypto_config_current_platform_cflags
+  cflags = crypto_config_common_cflags + crypto_config_current_platform_cflags + openssl_internal_cflags
 }
 
 config("crypto_config_public") {
@@ -1367,7 +1367,7 @@ unused_variables += libdefault_mingw64_sources
 
 config("ssl_config") {
   include_dirs = crypto_config_common_include_dirs + crypto_config_current_platform_include_dirs
-  cflags = crypto_config_common_cflags + crypto_config_current_platform_cflags
+  cflags = crypto_config_common_cflags + crypto_config_current_platform_cflags + openssl_internal_cflags
 }
 
 config("ssl_config_public") {
