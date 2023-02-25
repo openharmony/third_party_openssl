@@ -165,12 +165,16 @@ crypto_config_mingw64_include_dirs = [
 ]
 
 crypto_config_mingw64_cflags = [
+  # !!!              WARNING              !!!
+  # !!! DO NOT ADD -DWIN32_LEAN_AND_MEAN  !!!
+  # !!! DO NOT DEFINE WIN32_LEAN_AND_MEAN !!!
+  # !!!              WARNING              !!!
+
   "-DL_ENDIAN",
   "-D_MT",
   "-DOPENSSL_IA32_SSE2",
   "-D_UNICODE",
   "-DUNICODE",
-  "-DWIN32_LEAN_AND_MEAN",
   "-m64",
 
   "-DAES_ASM",
