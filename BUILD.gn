@@ -54,6 +54,14 @@ crypto_config_common_cflags = [
   #     if (m->d[j - 1] & (((BN_ULONG)1) << (BN_BITS2 - 1))) {
   #                                      ^  ~~~~~~~~~~~~~~
   "-Wno-error=shift-count-overflow",
+  # ../../third_party/openssl/crypto/conf/conf_def.c:31:11: error: 'stat' macro redefined [-Werror,-Wmacro-redefined]
+  # #  define stat    _stat
+  #           ^
+  # ../../prebuilts/mingw-w64/ohos/linux-x86_64/clang-mingw/x86_64-w64-mingw32/include/sys/stat.h:279:9: note: previous definition is here
+  # #define stat _stat64
+  #         ^
+  # 1 error generated.
+  "-Wno-error=macro-redefined",
 ]
 
 crypto_config_linux_armv4_include_dirs = [
