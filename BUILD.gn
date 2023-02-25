@@ -234,7 +234,8 @@ config("crypto_config") {
 config("crypto_config_public") {
   include_dirs = [ "include" ]
   include_dirs += crypto_config_current_platform_include_dirs
-  cflags = crypto_config_common_cflags + crypto_config_current_platform_public_cflags
+  # TODO cflags all private
+  # cflags = crypto_config_common_cflags + crypto_config_current_platform_public_cflags
 }
 
 libcommon_common_sources = [
@@ -1387,12 +1388,12 @@ config("ssl_config") {
 config("ssl_config_public") {
   include_dirs = [ "include" ]
   include_dirs += crypto_config_current_platform_include_dirs
-  cflags = crypto_config_common_cflags + crypto_config_current_platform_public_cflags
+  # TODO cflags all private
+  # cflags = crypto_config_common_cflags + crypto_config_current_platform_public_cflags
 }
 
 ohos_source_set("ssl_source") {
   sources = [
-    "crypto/packet.c",
     "ssl/bio_ssl.c",
     "ssl/d1_lib.c",
     "ssl/d1_msg.c",
