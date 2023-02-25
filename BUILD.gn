@@ -172,8 +172,6 @@ crypto_config_mingw64_public_cflags = [
   "-DL_ENDIAN",
   "-D_MT",
   "-DOPENSSL_IA32_SSE2",
-  "-D_UNICODE",
-  "-DUNICODE",
   "-m64",
 
   "-DAES_ASM",
@@ -201,6 +199,8 @@ crypto_config_mingw64_internal_cflags = [
   # !!! MUST DEFINE WIN32_LEAN_AND_MEAN !!!
   # !!!             WARNING             !!!
   "-DWIN32_LEAN_AND_MEAN",
+  "-D_UNICODE",
+  "-DUNICODE",
 ]
 crypto_config_mingw64_internal_cflags += crypto_config_mingw64_public_cflags
 
