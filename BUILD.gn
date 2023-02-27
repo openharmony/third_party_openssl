@@ -1400,7 +1400,7 @@ ohos_source_set("ssl_source") {
     "ssl/d1_srtp.c",
     "ssl/methods.c",
     "ssl/pqueue.c",
-    "ssl/s3_cbc.c",
+    # ssl/s3_cbc.c has been added into libdefault_common_sources
     "ssl/s3_enc.c",
     "ssl/s3_lib.c",
     "ssl/s3_msg.c",
