@@ -1431,7 +1431,7 @@ ohos_source_set("ssl_source") {
     "ssl/record/ssl3_buffer.c",
     "ssl/record/ssl3_record.c",
     "ssl/record/ssl3_record_tls13.c",
-    "ssl/record/tls_pad.c",
+    # ssl/record/tls_pad.c has been added into libcommon_common_sources
     "ssl/statem/extensions.c",
     "ssl/statem/extensions_clnt.c",
     "ssl/statem/extensions_cust.c",
