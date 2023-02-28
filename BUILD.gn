@@ -38,7 +38,7 @@ openssl_internal_cflags = [
   "-Wno-error=macro-redefined",
 ]
 
-crypto_config_common_include_dirs = [
+crypto_config_common_private_include_dirs = [
   ".",
   "apps/include",
   "crypto",
@@ -52,6 +52,7 @@ crypto_config_common_include_dirs = [
   "providers/common/include/prov",
   "providers/implementations/include",
 ]
+crypto_config_common_public_include_dirs = [ "include" ]
 
 crypto_config_common_cflags = [
   "-Wa,--noexecstack",
@@ -64,7 +65,7 @@ crypto_config_common_cflags = [
   "-DOPENSSLDIR=\"\"",
 ]
 
-crypto_config_linux_armv4_include_dirs = [
+crypto_config_linux_armv4_private_include_dirs = [
   "build_all_generated/linux-armv4/apps",
   "build_all_generated/linux-armv4/crypto",
   "build_all_generated/linux-armv4/include",
@@ -73,6 +74,7 @@ crypto_config_linux_armv4_include_dirs = [
   "build_all_generated/linux-armv4/providers/common/include",
   "build_all_generated/linux-armv4/providers/common/include/prov",
 ]
+crypto_config_linux_armv4_public_include_dirs = [ "build_all_generated/linux-armv4/include" ]
 
 crypto_config_linux_armv4_cflags = [
   "-DOPENSSL_USE_NODELETE",
@@ -92,7 +94,7 @@ crypto_config_linux_armv4_cflags = [
   "-DSHA512_ASM",
 ]
 
-crypto_config_linux_aarch64_include_dirs = [
+crypto_config_linux_aarch64_private_include_dirs = [
   "build_all_generated/linux-aarch64/apps",
   "build_all_generated/linux-aarch64/crypto",
   "build_all_generated/linux-aarch64/include",
@@ -101,6 +103,7 @@ crypto_config_linux_aarch64_include_dirs = [
   "build_all_generated/linux-aarch64/providers/common/include",
   "build_all_generated/linux-aarch64/providers/common/include/prov",
 ]
+crypto_config_linux_aarch64_public_include_dirs = [ "build_all_generated/linux-aarch64/include" ]
 
 crypto_config_linux_aarch64_cflags = [
   "-DOPENSSL_USE_NODELETE",
@@ -117,7 +120,7 @@ crypto_config_linux_aarch64_cflags = [
   "-DVPAES_ASM",
 ]
 
-crypto_config_linux_x86_64_include_dirs = [
+crypto_config_linux_x86_64_private_include_dirs = [
   "build_all_generated/linux-x86_64/apps",
   "build_all_generated/linux-x86_64/crypto",
   "build_all_generated/linux-x86_64/include",
@@ -126,6 +129,7 @@ crypto_config_linux_x86_64_include_dirs = [
   "build_all_generated/linux-x86_64/providers/common/include",
   "build_all_generated/linux-x86_64/providers/common/include/prov",
 ]
+crypto_config_linux_x86_64_public_include_dirs = [ "build_all_generated/linux-x86_64/include" ]
 
 crypto_config_linux_x86_64_cflags = [
   "-DL_ENDIAN",
@@ -154,7 +158,7 @@ crypto_config_linux_x86_64_cflags = [
   "-DX25519_ASM",
 ]
 
-crypto_config_mingw64_include_dirs = [
+crypto_config_mingw64_private_include_dirs = [
   "build_all_generated/mingw64/apps",
   "build_all_generated/mingw64/crypto",
   "build_all_generated/mingw64/include",
@@ -163,15 +167,15 @@ crypto_config_mingw64_include_dirs = [
   "build_all_generated/mingw64/providers/common/include",
   "build_all_generated/mingw64/providers/common/include/prov",
 ]
+crypto_config_mingw64_public_include_dirs = [ "build_all_generated/mingw64/include" ]
 
-crypto_config_mingw64_public_cflags = [
-  # !!!              WARNING              !!!
-  # !!! DO NOT ADD -DWIN32_LEAN_AND_MEAN  !!!
-  # !!! DO NOT DEFINE WIN32_LEAN_AND_MEAN !!!
-  # !!!              WARNING              !!!
-  "-DL_ENDIAN",
+crypto_config_mingw64_cflags = [
   "-D_MT",
+  "-D_UNICODE",
+  "-DL_ENDIAN",
   "-DOPENSSL_IA32_SSE2",
+  "-DUNICODE",
+  "-DWIN32_LEAN_AND_MEAN",
   "-m64",
 
   "-DAES_ASM",
@@ -193,49 +197,46 @@ crypto_config_mingw64_public_cflags = [
   "-DX25519_ASM",
 ]
 
-crypto_config_mingw64_internal_cflags = [
-  # !!!             WARNING             !!!
-  # !!! MUST ADD -DWIN32_LEAN_AND_MEAN  !!!
-  # !!! MUST DEFINE WIN32_LEAN_AND_MEAN !!!
-  # !!!             WARNING             !!!
-  "-DWIN32_LEAN_AND_MEAN",
-  "-D_UNICODE",
-  "-DUNICODE",
-]
-crypto_config_mingw64_internal_cflags += crypto_config_mingw64_public_cflags
 
-crypto_config_current_platform_include_dirs = []
-crypto_config_current_platform_internal_cflags = []
-crypto_config_current_platform_public_cflags = []
+print("openssl detecting os now...")
+print("current_cpu = " + current_cpu)
+print("current_os = " + current_os)
+print("is_mingw =")
+print(is_mingw)
+crypto_config_current_platform_private_include_dirs = []
+crypto_config_current_platform_public_include_dirs = []
+crypto_config_current_platform_cflags = []
 if (current_cpu == "arm" && !(current_os == "linux" || host_os == "mac")) {
-  crypto_config_current_platform_include_dirs += crypto_config_linux_armv4_include_dirs
-  crypto_config_current_platform_internal_cflags += crypto_config_linux_armv4_cflags
-  crypto_config_current_platform_public_cflags += crypto_config_linux_armv4_cflags
+  print("openssl selected linux-armv4")
+  crypto_config_current_platform_private_include_dirs += crypto_config_linux_armv4_private_include_dirs
+  crypto_config_current_platform_public_include_dirs += crypto_config_linux_armv4_public_include_dirs
+  crypto_config_current_platform_cflags += crypto_config_linux_armv4_cflags
 } else if (current_cpu == "arm64" &&
             !(current_os == "linux" || host_os == "mac")) {
-  crypto_config_current_platform_include_dirs += crypto_config_linux_aarch64_include_dirs
-  crypto_config_current_platform_internal_cflags += crypto_config_linux_aarch64_cflags
-  crypto_config_current_platform_public_cflags += crypto_config_linux_aarch64_cflags
+  print("openssl selected linux-aarch64")
+  crypto_config_current_platform_private_include_dirs += crypto_config_linux_aarch64_private_include_dirs
+  crypto_config_current_platform_public_include_dirs += crypto_config_linux_aarch64_public_include_dirs
+  crypto_config_current_platform_cflags += crypto_config_linux_aarch64_cflags
 } else if (current_cpu == "x64" && current_os != "mingw") {
-  crypto_config_current_platform_include_dirs += crypto_config_linux_x86_64_include_dirs
-  crypto_config_current_platform_internal_cflags += crypto_config_linux_x86_64_cflags
-  crypto_config_current_platform_public_cflags += crypto_config_linux_x86_64_cflags
+  print("openssl selected linux-x86_64")
+  crypto_config_current_platform_private_include_dirs += crypto_config_linux_x86_64_private_include_dirs
+  crypto_config_current_platform_public_include_dirs += crypto_config_linux_x86_64_public_include_dirs
+  crypto_config_current_platform_cflags += crypto_config_linux_x86_64_cflags
 } else if (is_mingw) {
-  crypto_config_current_platform_include_dirs += crypto_config_mingw64_include_dirs
-  crypto_config_current_platform_internal_cflags += crypto_config_mingw64_internal_cflags
-  crypto_config_current_platform_public_cflags += crypto_config_mingw64_public_cflags
+  print("openssl selected mingw64")
+  crypto_config_current_platform_private_include_dirs += crypto_config_mingw64_private_include_dirs
+  crypto_config_current_platform_public_include_dirs += crypto_config_mingw64_public_include_dirs
+  crypto_config_current_platform_cflags += crypto_config_mingw64_cflags
 }
+print("openssl detecting os done...")
 
-config("crypto_config") {
-  include_dirs = crypto_config_common_include_dirs + crypto_config_current_platform_include_dirs
-  cflags = crypto_config_common_cflags + crypto_config_current_platform_internal_cflags + openssl_internal_cflags
+config("crypto_config_private") {
+  include_dirs = crypto_config_common_private_include_dirs + crypto_config_current_platform_private_include_dirs
+  cflags = crypto_config_common_cflags + crypto_config_current_platform_cflags + openssl_internal_cflags
 }
 
 config("crypto_config_public") {
-  include_dirs = [ "include" ]
-  include_dirs += crypto_config_current_platform_include_dirs
-  # TODO cflags all private
-  # cflags = crypto_config_common_cflags + crypto_config_current_platform_public_cflags
+  include_dirs = crypto_config_common_public_include_dirs + crypto_config_current_platform_public_include_dirs
 }
 
 libcommon_common_sources = [
@@ -1307,7 +1308,7 @@ ohos_source_set("crypto_source") {
     ]
   }
 
-  configs = [ ":crypto_config" ]
+  configs = [ ":crypto_config_private" ]
   public_configs = [ ":crypto_config_public" ]
 }
 
@@ -1350,25 +1351,23 @@ ohos_shared_library("libcrypto_shared") {
   ]
 }
 
-print("openssl detecting os now...")
-print("current_cpu = " + current_cpu)
-print("current_os = " + current_os)
-print("is_mingw =")
-print(is_mingw)
-print("openssl detecting os done...")
 unused_variables = []
 unused_variables += unused_variables
-unused_variables += crypto_config_common_include_dirs
+unused_variables += crypto_config_common_private_include_dirs
+unused_variables += crypto_config_common_public_include_dirs
 unused_variables += crypto_config_common_cflags
-unused_variables += crypto_config_linux_armv4_include_dirs
+unused_variables += crypto_config_linux_armv4_private_include_dirs
+unused_variables += crypto_config_linux_armv4_public_include_dirs
 unused_variables += crypto_config_linux_armv4_cflags
-unused_variables += crypto_config_linux_aarch64_include_dirs
+unused_variables += crypto_config_linux_aarch64_private_include_dirs
+unused_variables += crypto_config_linux_aarch64_public_include_dirs
 unused_variables += crypto_config_linux_aarch64_cflags
-unused_variables += crypto_config_linux_x86_64_include_dirs
+unused_variables += crypto_config_linux_x86_64_private_include_dirs
+unused_variables += crypto_config_linux_x86_64_public_include_dirs
 unused_variables += crypto_config_linux_x86_64_cflags
-unused_variables += crypto_config_mingw64_include_dirs
-unused_variables += crypto_config_mingw64_internal_cflags
-unused_variables += crypto_config_mingw64_public_cflags
+unused_variables += crypto_config_mingw64_private_include_dirs
+unused_variables += crypto_config_mingw64_public_include_dirs
+unused_variables += crypto_config_mingw64_cflags
 unused_variables += libcommon_common_sources
 unused_variables += libcommon_linux_armv4_sources
 unused_variables += libcommon_linux_aarch64_sources
@@ -1381,15 +1380,12 @@ unused_variables += libdefault_linux_x86_64_sources
 unused_variables += libdefault_mingw64_sources
 
 config("ssl_config") {
-  include_dirs = crypto_config_common_include_dirs + crypto_config_current_platform_include_dirs
-  cflags = crypto_config_common_cflags + crypto_config_current_platform_internal_cflags + openssl_internal_cflags
+  include_dirs = crypto_config_common_private_include_dirs + crypto_config_current_platform_private_include_dirs
+  cflags = crypto_config_common_cflags + crypto_config_current_platform_cflags + openssl_internal_cflags
 }
 
 config("ssl_config_public") {
-  include_dirs = [ "include" ]
-  include_dirs += crypto_config_current_platform_include_dirs
-  # TODO cflags all private
-  # cflags = crypto_config_common_cflags + crypto_config_current_platform_public_cflags
+  include_dirs = crypto_config_common_public_include_dirs + crypto_config_current_platform_public_include_dirs
 }
 
 ohos_source_set("ssl_source") {
