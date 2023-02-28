@@ -199,10 +199,9 @@ crypto_config_mingw64_cflags = [
 
 
 print("openssl detecting os now...")
-print("current_cpu = " + current_cpu)
-print("current_os = " + current_os)
-print("is_mingw =")
-print(is_mingw)
+print("current_cpu = ${current_cpu}")
+print("current_os = ${current_os}")
+print("is_mingw = ${is_mingw}")
 crypto_config_current_platform_private_include_dirs = []
 crypto_config_current_platform_public_include_dirs = []
 crypto_config_current_platform_cflags = []
