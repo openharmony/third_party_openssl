@@ -1,7 +1,7 @@
 {
     "name": "@ohos/openssl",
     "description": "OpenSSL is a robust, commercial-grade, full-featured Open Source Toolkit for the Transport Layer Security (TLS) protocol formerly known as the Secure Sockets Layer (SSL) protocol.",
-    "version": "3.0.7",
+    "version": "3.1",
     "license": "Apache License 2.0",
     "publishAs": "code-segment",
     "segment": {
