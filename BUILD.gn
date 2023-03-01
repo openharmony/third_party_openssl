@@ -39,6 +39,8 @@ openssl_internal_cflags = [
   #         ^
   # 1 error generated.
   "-Wno-error=macro-redefined",
+
+  "-Wno-error=implicit-fallthrough",
 ]
 
 crypto_config_common_private_include_dirs = [
