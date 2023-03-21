@@ -28,6 +28,13 @@ breaking changes, and mappings for the large list of deprecated functions.
 
 [Migration guide]: https://github.com/openssl/openssl/tree/master/doc/man7/migration_guide.pod
 
+ * Corrected documentation of X509_VERIFY_PARAM_add0_policy() to mention
+   that it does not enable policy checking. Thanks to David Benjamin for
+   discovering this issue.
+   ([CVE-2023-0466])
+
+   *Tomáš Mráz*
+
  * Fixed buffer overread in AES-XTS decryption on ARM 64 bit platforms which
    happens if the buffer size is 4 mod 5. This can trigger a crash of an
    application using AES-XTS decryption if the memory just after the buffer
@@ -19442,6 +19449,7 @@ ndif
 
 <!-- Links -->
 
+[CVE-2023-0466]: https://www.openssl.org/news/vulnerabilities.html#CVE-2023-0466
 [CVE-2023-1255]: https://www.openssl.org/news/vulnerabilities.html#CVE-2023-1255
 [CVE-2023-0286]: https://www.openssl.org/news/vulnerabilities.html#CVE-2023-0286
 [CVE-2022-2274]: https://www.openssl.org/news/vulnerabilities.html#CVE-2022-2274
