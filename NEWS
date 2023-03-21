@@ -4,6 +4,7 @@
 
   This file gives a brief overview of the major changes between each OpenSSL
   release. For more details please read the CHANGES file.
+      o Fixed documentation of X509_VERIFY_PARAM_add0_policy() (CVE-2023-0466)
 
   Major changes between OpenSSL 1.1.1m and OpenSSL 1.1.1n [15 Mar 2022]
 
