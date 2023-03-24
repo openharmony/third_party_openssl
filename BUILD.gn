@@ -1099,6 +1099,6 @@ ohos_shared_library("libssl_shared") {
 
   install_images = [
     "system",
-    "updater",  
+    "updater",
   ]
 }
