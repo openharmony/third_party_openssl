@@ -984,6 +984,7 @@ config("ssl_config") {
     "-DOPENSSL_NO_SSL2",
     "-DOPENSSL_NO_SSL3",
     "-DOPENSSL_NO_SSL3_METHOD",
+    "-Wno-unused-but-set-variable",
   ]
 
   if (current_cpu == "arm" && host_os != "mac") {
