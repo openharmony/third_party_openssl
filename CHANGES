@@ -9,6 +9,11 @@
 
 Changes between 1.1.1s and 1.1.1t [xx XXX xxxx]
 
+  *) Corrected documentation of X509_VERIFY_PARAM_add0_policy() to mention
+     that it does not enable policy checking. Thanks to
+     David Benjamin for discovering this issue. (CVE-2023-0466)
+     [Tomas Mraz]
+
   *) Fixed a type confusion vulnerability relating to X.400 address processing
      inside an X.509 GeneralName. X.400 addresses were parsed as an ASN1_STRING
      but subsequently interpreted by GENERAL_NAME_cmp as an ASN1_TYPE. This
