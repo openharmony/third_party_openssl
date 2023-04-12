@@ -42,6 +42,9 @@ openssl_internal_cflags = [
 
   "-Wno-error=implicit-fallthrough",
   "-Wno-error=sign-compare",
+
+  # Fix llvm-15 build error
+  "-Wno-unused-but-set-variable",
 ]
 
 crypto_config_common_private_include_dirs = [
@@ -1394,7 +1397,7 @@ unused_variables += libdefault_linux_aarch64_sources
 unused_variables += libdefault_linux_x86_64_sources
 unused_variables += libdefault_mingw64_sources
 
-config("ssl_config") {
+config("ssl_config_private") {
   include_dirs = crypto_config_common_private_include_dirs +
                  crypto_config_current_platform_private_include_dirs
   cflags = crypto_config_common_cflags + crypto_config_current_platform_cflags +
@@ -1459,7 +1462,7 @@ ohos_source_set("ssl_source") {
     "ssl/tls_srp.c",
   ]
 
-  configs = [ ":ssl_config" ]
+  configs = [ ":ssl_config_private" ]
   public_configs = [ ":ssl_config_public" ]
 }
 
@@ -1489,5 +1492,10 @@ ohos_shared_library("libssl_shared") {
     ":ssl_config_public",
   ]
 
-  install_images = [ "system" ]
+  install_images = [
+    "system",
+
+    # compile libssl_openssl.z.so to the updater image for wpa to use
+    "updater",
+  ]
 }
