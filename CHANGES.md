@@ -28,6 +28,15 @@ breaking changes, and mappings for the large list of deprecated functions.
 
 [Migration guide]: https://github.com/openssl/openssl/tree/master/doc/man7/migration_guide.pod
 
+ * Fixed buffer overread in AES-XTS decryption on ARM 64 bit platforms which
+   happens if the buffer size is 4 mod 5. This can trigger a crash of an
+   application using AES-XTS decryption if the memory just after the buffer
+   being decrypted is not mapped.
+   Thanks to Anton Romanov (Amazon) for discovering the issue.
+   ([CVE-2023-1255])
+
+   *Nevine Ebeid*
+
  * Fixed a type confusion vulnerability relating to X.400 address processing
    inside an X.509 GeneralName. X.400 addresses were parsed as an `ASN1_STRING`
    but subsequently interpreted by `GENERAL_NAME_cmp` as an `ASN1_TYPE`. This
@@ -19433,6 +19442,7 @@ ndif
 
 <!-- Links -->
 
+[CVE-2023-1255]: https://www.openssl.org/news/vulnerabilities.html#CVE-2023-1255
 [CVE-2023-0286]: https://www.openssl.org/news/vulnerabilities.html#CVE-2023-0286
 [CVE-2022-2274]: https://www.openssl.org/news/vulnerabilities.html#CVE-2022-2274
 [CVE-2022-2097]: https://www.openssl.org/news/vulnerabilities.html#CVE-2022-2274

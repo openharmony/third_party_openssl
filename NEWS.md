@@ -17,6 +17,8 @@ OpenSSL Releases
 
 OpenSSL 3.0
 -----------
+  * Fixed buffer overread in AES-XTS decryption on ARM 64 bit platforms
+    ([CVE-2023-1255])
 
 ### Major changes between OpenSSL 3.0.6 and OpenSSL 3.0.7 [1 Nov 2022]
 
@@ -1419,6 +1421,7 @@ OpenSSL 0.9.x
 
 <!-- Links -->
 
+[CVE-2023-1255]: https://www.openssl.org/news/vulnerabilities.html#CVE-2023-1255
 [CVE-2022-2274]: https://www.openssl.org/news/vulnerabilities.html#CVE-2022-2274
 [CVE-2022-2097]: https://www.openssl.org/news/vulnerabilities.html#CVE-2022-2274
 [CVE-2020-1971]: https://www.openssl.org/news/vulnerabilities.html#CVE-2020-1971
