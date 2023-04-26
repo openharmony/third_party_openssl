@@ -8550,6 +8550,7 @@ our %unified_info = (
                 "crypto/bn/libcrypto-lib-bn_srp.o",
                 "crypto/bn/libcrypto-lib-bn_word.o",
                 "crypto/bn/libcrypto-lib-bn_x931p.o",
+                "crypto/bn/libcrypto-lib-rsa_sup_mul.o",
                 "crypto/bn/libcrypto-shlib-armv8-mont.o",
                 "crypto/bn/libcrypto-shlib-bn_add.o",
                 "crypto/bn/libcrypto-shlib-bn_asm.o",
@@ -8584,6 +8585,7 @@ our %unified_info = (
                 "crypto/bn/libcrypto-shlib-bn_srp.o",
                 "crypto/bn/libcrypto-shlib-bn_word.o",
                 "crypto/bn/libcrypto-shlib-bn_x931p.o",
+                "crypto/bn/libcrypto-shlib-rsa_sup_mul.o",
                 "crypto/bn/liblegacy-lib-armv8-mont.o",
                 "crypto/bn/liblegacy-lib-bn_asm.o"
             ],
@@ -20981,6 +20983,7 @@ our %unified_info = (
             "crypto/bn/libcrypto-shlib-bn_srp.o",
             "crypto/bn/libcrypto-shlib-bn_word.o",
             "crypto/bn/libcrypto-shlib-bn_x931p.o",
+            "crypto/bn/libcrypto-shlib-rsa_sup_mul.o",
             "crypto/buffer/libcrypto-shlib-buf_err.o",
             "crypto/buffer/libcrypto-shlib-buffer.o",
             "crypto/camellia/libcrypto-shlib-camellia.o",
@@ -22726,6 +22729,9 @@ our %unified_info = (
         "crypto/bn/libcrypto-lib-bn_x931p.o" => [
             "crypto/bn/bn_x931p.c"
         ],
+        "crypto/bn/libcrypto-lib-rsa_sup_mul.o" => [
+            "crypto/bn/rsa_sup_mul.c"
+        ],
         "crypto/bn/libcrypto-shlib-armv8-mont.o" => [
             "crypto/bn/armv8-mont.S"
         ],
@@ -22827,6 +22833,9 @@ our %unified_info = (
         ],
         "crypto/bn/libcrypto-shlib-bn_x931p.o" => [
             "crypto/bn/bn_x931p.c"
+        ],
+        "crypto/bn/libcrypto-shlib-rsa_sup_mul.o" => [
+            "crypto/bn/rsa_sup_mul.c"
         ],
         "crypto/bn/liblegacy-lib-armv8-mont.o" => [
             "crypto/bn/armv8-mont.S"
@@ -26789,6 +26798,7 @@ our %unified_info = (
             "crypto/bn/libcrypto-lib-bn_srp.o",
             "crypto/bn/libcrypto-lib-bn_word.o",
             "crypto/bn/libcrypto-lib-bn_x931p.o",
+            "crypto/bn/libcrypto-lib-rsa_sup_mul.o",
             "crypto/buffer/libcrypto-lib-buf_err.o",
             "crypto/buffer/libcrypto-lib-buffer.o",
             "crypto/camellia/libcrypto-lib-camellia.o",
@@ -30278,8 +30288,8 @@ unless (caller) {
     use File::Copy;
     use Pod::Usage;
 
-    use lib '/mnt/data/f00574894/openssl/openssl3.0.7/openssl-linux-aarch64/util/perl';
-    use OpenSSL::fallback '/mnt/data/f00574894/openssl/openssl3.0.7/openssl-linux-aarch64/external/perl/MODULES.txt';
+    use lib '/tmp/third_party_openssl/util/perl';
+    use OpenSSL::fallback '/tmp/third_party_openssl/external/perl/MODULES.txt';
 
     my $here = dirname($0);
 
@@ -30306,7 +30316,7 @@ unless (caller) {
             );
 
         use lib '.';
-        use lib '/mnt/data/f00574894/openssl/openssl3.0.7/openssl-linux-aarch64/Configurations';
+        use lib '/tmp/third_party_openssl/Configurations';
         use gentemplate;
 
         open my $buildfile_template_fh, ">$buildfile_template"
@@ -30323,8 +30333,8 @@ unless (caller) {
 
         my $prepend = <<'_____';
 use File::Spec::Functions;
-use lib '/mnt/data/f00574894/openssl/openssl3.0.7/openssl-linux-aarch64/util/perl';
-use lib '/mnt/data/f00574894/openssl/openssl3.0.7/openssl-linux-aarch64/Configurations';
+use lib '/tmp/third_party_openssl/util/perl';
+use lib '/tmp/third_party_openssl/Configurations';
 use lib '.';
 use platform;
 _____

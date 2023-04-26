@@ -2914,7 +2914,7 @@ aes_v8_xts_decrypt:
 .align	4
 .Lxts_dec_tail4x:
 	add	x0,x0,#16
-	ld1	{v0.4s},[x0],#16
+	tst	x21,#0xf
 	eor	v5.16b,v1.16b,v4.16b
 	st1	{v5.16b},[x1],#16
 	eor	v17.16b,v24.16b,v17.16b
@@ -2923,6 +2923,8 @@ aes_v8_xts_decrypt:
 	eor	v31.16b,v26.16b,v31.16b
 	st1	{v30.16b,v31.16b},[x1],#32
 
+	b.eq	.Lxts_dec_abort
+	ld1	{v0.4s},[x0],#16
 	b	.Lxts_done
 .align	4
 .Lxts_outer_dec_tail:
