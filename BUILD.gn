@@ -131,6 +131,43 @@ crypto_config_linux_aarch64_cflags = [
   "-DVPAES_ASM",
 ]
 
+crypto_config_darwin64_x86_64_cc_private_include_dirs = [
+  "build_all_generated/darwin64-x86_64-cc/apps",
+  "build_all_generated/darwin64-x86_64-cc/crypto",
+  "build_all_generated/darwin64-x86_64-cc/include",
+  "build_all_generated/darwin64-x86_64-cc/include/crypto",
+  "build_all_generated/darwin64-x86_64-cc/include/openssl",
+  "build_all_generated/darwin64-x86_64-cc/providers/common/include",
+  "build_all_generated/darwin64-x86_64-cc/providers/common/include/prov",
+]
+crypto_config_darwin64_x86_64_cc_public_include_dirs =
+    [ "build_all_generated/darwin64-x86_64-cc/include" ]
+
+crypto_config_darwin64_x86_64_cc_cflags = [
+  "-fPIC",
+  "-DL_ENDIAN",
+  "-D_REENTRANT",
+  "-DOPENSSL_IA32_SSE2",
+
+  "-DAES_ASM",
+  "-DBSAES_ASM",
+  "-DCMLL_ASM",
+  "-DECP_NISTZ256_ASM",
+  "-DGHASH_ASM",
+  "-DKECCAK1600_ASM",
+  "-DMD5_ASM",
+  "-DOPENSSL_BN_ASM_GF2m",
+  "-DOPENSSL_BN_ASM_MONT",
+  "-DOPENSSL_BN_ASM_MONT5",
+  "-DPOLY1305_ASM",
+  "-DSHA1_ASM",
+  "-DSHA256_ASM",
+  "-DSHA512_ASM",
+  "-DVPAES_ASM",
+  "-DWHIRLPOOL_ASM",
+  "-DX25519_ASM",
+]
+
 crypto_config_linux_x86_64_private_include_dirs = [
   "build_all_generated/linux-x86_64/apps",
   "build_all_generated/linux-x86_64/crypto",
@@ -217,8 +254,10 @@ print("is_mingw = ${is_mingw}")
 crypto_config_current_platform_private_include_dirs = []
 crypto_config_current_platform_public_include_dirs = []
 crypto_config_current_platform_cflags = []
+openssl_selected_platform = ""
 if (current_cpu == "arm" && !(current_os == "linux" || host_os == "mac")) {
   print("openssl selected linux-armv4")
+  openssl_selected_platform = "linux-armv4"
   crypto_config_current_platform_private_include_dirs +=
       crypto_config_linux_armv4_private_include_dirs
   crypto_config_current_platform_public_include_dirs +=
@@ -227,13 +266,26 @@ if (current_cpu == "arm" && !(current_os == "linux" || host_os == "mac")) {
 } else if (current_cpu == "arm64" &&
            !(current_os == "linux" || host_os == "mac")) {
   print("openssl selected linux-aarch64")
+  openssl_selected_platform = "linux-aarch64"
   crypto_config_current_platform_private_include_dirs +=
       crypto_config_linux_aarch64_private_include_dirs
   crypto_config_current_platform_public_include_dirs +=
       crypto_config_linux_aarch64_public_include_dirs
   crypto_config_current_platform_cflags += crypto_config_linux_aarch64_cflags
-} else if (current_cpu == "x64" && current_os != "mingw") {
+} else if ((current_cpu == "x64" || current_cpu == "x86_64") &&
+           current_os == "mac") {
+  print("openssl selected darwin64-x86_64-cc")
+  openssl_selected_platform = "darwin64-x86_64-cc"
+  crypto_config_current_platform_private_include_dirs +=
+      crypto_config_darwin64_x86_64_cc_private_include_dirs
+  crypto_config_current_platform_public_include_dirs +=
+      crypto_config_darwin64_x86_64_cc_public_include_dirs
+  crypto_config_current_platform_cflags +=
+      crypto_config_darwin64_x86_64_cc_cflags
+} else if ((current_cpu == "x64" || current_cpu == "x86_64") &&
+           current_os != "mingw") {
   print("openssl selected linux-x86_64")
+  openssl_selected_platform = "linux-x86_64"
   crypto_config_current_platform_private_include_dirs +=
       crypto_config_linux_x86_64_private_include_dirs
   crypto_config_current_platform_public_include_dirs +=
@@ -241,13 +293,15 @@ if (current_cpu == "arm" && !(current_os == "linux" || host_os == "mac")) {
   crypto_config_current_platform_cflags += crypto_config_linux_x86_64_cflags
 } else if (is_mingw) {
   print("openssl selected mingw64")
+  openssl_selected_platform = "mingw64"
   crypto_config_current_platform_private_include_dirs +=
       crypto_config_mingw64_private_include_dirs
   crypto_config_current_platform_public_include_dirs +=
       crypto_config_mingw64_public_include_dirs
   crypto_config_current_platform_cflags += crypto_config_mingw64_cflags
 }
-print("openssl detecting os done...")
+print(
+    "openssl detecting os done. openssl_selected_platform = ${openssl_selected_platform}")
 
 config("crypto_config_private") {
   include_dirs = crypto_config_common_private_include_dirs +
@@ -297,6 +351,15 @@ libcommon_linux_aarch64_sources = [
   "build_all_generated/linux-aarch64/providers/common/der/der_ecx_gen.c",
   "build_all_generated/linux-aarch64/providers/common/der/der_rsa_gen.c",
   "build_all_generated/linux-aarch64/providers/common/der/der_wrap_gen.c",
+]
+
+libcommon_darwin64_x86_64_cc_sources = [
+  "build_all_generated/darwin64-x86_64-cc/providers/common/der/der_digests_gen.c",
+  "build_all_generated/darwin64-x86_64-cc/providers/common/der/der_dsa_gen.c",
+  "build_all_generated/darwin64-x86_64-cc/providers/common/der/der_ec_gen.c",
+  "build_all_generated/darwin64-x86_64-cc/providers/common/der/der_ecx_gen.c",
+  "build_all_generated/darwin64-x86_64-cc/providers/common/der/der_rsa_gen.c",
+  "build_all_generated/darwin64-x86_64-cc/providers/common/der/der_wrap_gen.c",
 ]
 
 libcommon_linux_x86_64_sources = [
@@ -449,6 +512,10 @@ libdefault_linux_armv4_sources =
 
 libdefault_linux_aarch64_sources =
     [ "build_all_generated/linux-aarch64/providers/common/der/der_sm2_gen.c" ]
+
+libdefault_darwin64_x86_64_cc_sources = [
+  "build_all_generated/darwin64-x86_64-cc/providers/common/der/der_sm2_gen.c",
+]
 
 libdefault_linux_x86_64_sources =
     [ "build_all_generated/linux-x86_64/providers/common/der/der_sm2_gen.c" ]
@@ -1190,7 +1257,7 @@ ohos_source_set("crypto_source") {
   sources += libcommon_common_sources
   sources += libdefault_common_sources
 
-  if (current_cpu == "arm" && !(current_os == "linux" || host_os == "mac")) {
+  if (openssl_selected_platform == "linux-armv4") {
     sources += libcommon_linux_armv4_sources
     sources += libdefault_linux_armv4_sources
     sources += [
@@ -1218,8 +1285,7 @@ ohos_source_set("crypto_source") {
       "crypto/rc4/rc4_skey.c",
       "crypto/whrlpool/wp_block.c",
     ]
-  } else if (current_cpu == "arm64" &&
-             !(current_os == "linux" || host_os == "mac")) {
+  } else if (openssl_selected_platform == "linux-aarch64") {
     sources += libcommon_linux_aarch64_sources
     sources += libdefault_linux_aarch64_sources
     sources += [
@@ -1246,7 +1312,46 @@ ohos_source_set("crypto_source") {
       "crypto/rc4/rc4_skey.c",
       "crypto/whrlpool/wp_block.c",
     ]
-  } else if (current_cpu == "x64" && current_os != "mingw") {
+  } else if (openssl_selected_platform == "darwin64-x86_64-cc") {
+    sources += libcommon_darwin64_x86_64_cc_sources
+    sources += libdefault_darwin64_x86_64_cc_sources
+    sources += [
+      "build_all_generated/darwin64-x86_64-cc/crypto/aes/aes-x86_64.s",
+      "build_all_generated/darwin64-x86_64-cc/crypto/aes/aesni-mb-x86_64.s",
+      "build_all_generated/darwin64-x86_64-cc/crypto/aes/aesni-sha1-x86_64.s",
+      "build_all_generated/darwin64-x86_64-cc/crypto/aes/aesni-sha256-x86_64.s",
+      "build_all_generated/darwin64-x86_64-cc/crypto/aes/aesni-x86_64.s",
+      "build_all_generated/darwin64-x86_64-cc/crypto/aes/bsaes-x86_64.s",
+      "build_all_generated/darwin64-x86_64-cc/crypto/aes/vpaes-x86_64.s",
+      "build_all_generated/darwin64-x86_64-cc/crypto/bn/rsaz-avx2.s",
+      "build_all_generated/darwin64-x86_64-cc/crypto/bn/rsaz-avx512.s",
+      "build_all_generated/darwin64-x86_64-cc/crypto/bn/rsaz-x86_64.s",
+      "build_all_generated/darwin64-x86_64-cc/crypto/bn/x86_64-gf2m.s",
+      "build_all_generated/darwin64-x86_64-cc/crypto/bn/x86_64-mont.s",
+      "build_all_generated/darwin64-x86_64-cc/crypto/bn/x86_64-mont5.s",
+      "build_all_generated/darwin64-x86_64-cc/crypto/camellia/cmll-x86_64.s",
+      "build_all_generated/darwin64-x86_64-cc/crypto/chacha/chacha-x86_64.s",
+      "build_all_generated/darwin64-x86_64-cc/crypto/ec/ecp_nistz256-x86_64.s",
+      "build_all_generated/darwin64-x86_64-cc/crypto/ec/x25519-x86_64.s",
+      "build_all_generated/darwin64-x86_64-cc/crypto/md5/md5-x86_64.s",
+      "build_all_generated/darwin64-x86_64-cc/crypto/modes/aesni-gcm-x86_64.s",
+      "build_all_generated/darwin64-x86_64-cc/crypto/modes/ghash-x86_64.s",
+      "build_all_generated/darwin64-x86_64-cc/crypto/poly1305/poly1305-x86_64.s",
+      "build_all_generated/darwin64-x86_64-cc/crypto/rc4/rc4-md5-x86_64.s",
+      "build_all_generated/darwin64-x86_64-cc/crypto/rc4/rc4-x86_64.s",
+      "build_all_generated/darwin64-x86_64-cc/crypto/sha/keccak1600-x86_64.s",
+      "build_all_generated/darwin64-x86_64-cc/crypto/sha/sha1-mb-x86_64.s",
+      "build_all_generated/darwin64-x86_64-cc/crypto/sha/sha1-x86_64.s",
+      "build_all_generated/darwin64-x86_64-cc/crypto/sha/sha256-mb-x86_64.s",
+      "build_all_generated/darwin64-x86_64-cc/crypto/sha/sha256-x86_64.s",
+      "build_all_generated/darwin64-x86_64-cc/crypto/sha/sha512-x86_64.s",
+      "build_all_generated/darwin64-x86_64-cc/crypto/whrlpool/wp-x86_64.s",
+      "build_all_generated/darwin64-x86_64-cc/crypto/x86_64cpuid.s",
+      "crypto/bn/asm/x86_64-gcc.c",
+      "crypto/bn/rsaz_exp.c",
+      "crypto/bn/rsaz_exp_x2.c",
+    ]
+  } else if (openssl_selected_platform == "linux-x86_64") {
     sources += libcommon_linux_x86_64_sources
     sources += libdefault_linux_x86_64_sources
     sources += [
@@ -1285,7 +1390,7 @@ ohos_source_set("crypto_source") {
       "crypto/bn/rsaz_exp.c",
       "crypto/bn/rsaz_exp_x2.c",
     ]
-  } else if (is_mingw) {
+  } else if (openssl_selected_platform == "mingw64") {
     sources += libcommon_mingw64_sources
     sources += libdefault_mingw64_sources
     sources += [
@@ -1381,6 +1486,9 @@ unused_variables += crypto_config_linux_armv4_cflags
 unused_variables += crypto_config_linux_aarch64_private_include_dirs
 unused_variables += crypto_config_linux_aarch64_public_include_dirs
 unused_variables += crypto_config_linux_aarch64_cflags
+unused_variables += crypto_config_darwin64_x86_64_cc_private_include_dirs
+unused_variables += crypto_config_darwin64_x86_64_cc_public_include_dirs
+unused_variables += crypto_config_darwin64_x86_64_cc_cflags
 unused_variables += crypto_config_linux_x86_64_private_include_dirs
 unused_variables += crypto_config_linux_x86_64_public_include_dirs
 unused_variables += crypto_config_linux_x86_64_cflags
@@ -1390,11 +1498,13 @@ unused_variables += crypto_config_mingw64_cflags
 unused_variables += libcommon_common_sources
 unused_variables += libcommon_linux_armv4_sources
 unused_variables += libcommon_linux_aarch64_sources
+unused_variables += libcommon_darwin64_x86_64_cc_sources
 unused_variables += libcommon_linux_x86_64_sources
 unused_variables += libcommon_mingw64_sources
 unused_variables += libdefault_common_sources
 unused_variables += libdefault_linux_armv4_sources
 unused_variables += libdefault_linux_aarch64_sources
+unused_variables += libdefault_darwin64_x86_64_cc_sources
 unused_variables += libdefault_linux_x86_64_sources
 unused_variables += libdefault_mingw64_sources
 
