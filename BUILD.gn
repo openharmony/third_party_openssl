@@ -28,10 +28,13 @@ if (current_cpu == "arm" && !(current_os == "linux" || host_os == "mac")) {
   print("openssl selected linux-aarch64")
   openssl_selected_platform = "linux-aarch64"
 } else if ((current_cpu == "x64" || current_cpu == "x86_64") &&
-           current_os == "mac") {
+           (current_os == "mac" || current_os == "ios")) {
+  # compilation for ios depends the platform
   print("openssl selected darwin64-x86_64-cc")
   openssl_selected_platform = "darwin64-x86_64-cc"
-} else if (current_cpu == "arm64" && current_os == "mac") {
+} else if (current_cpu == "arm64" &&
+           (current_os == "mac" || current_os == "ios")) {
+  # ios and macos both use the platform
   print("openssl selected darwin64-arm64-cc")
   openssl_selected_platform = "darwin64-arm64-cc"
 } else if ((current_cpu == "x64" || current_cpu == "x86_64") &&
