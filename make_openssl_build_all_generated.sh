@@ -26,7 +26,8 @@ pushd ${build_all_generated_path}
         ./Configure ${openssl_selected_platform}
         make build_all_generated -j256 >/dev/null 2>&1
     popd
-    diff -q -r --exclude=".git" ${openssl_source_path} openssl | sed 's#^Only in ##;s#: #/#' | tar -czf ${openssl_selected_platform}.tgz -T -
+    # https://stackoverflow.com/questions/11325123/how-to-compare-two-directories-using-diff-while-ignoring-non-existing-files
+    LC_ALL=C diff -q -r --exclude=".git" ${openssl_source_path} openssl | sed 's#^Only in ##;s#: #/#' | tar -czf ${openssl_selected_platform}.tgz -T -
     rm -rf ./openssl
     tar -xf ${openssl_selected_platform}.tgz
     mv openssl ${openssl_selected_platform}
