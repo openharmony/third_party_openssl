@@ -44,6 +44,12 @@ if (current_cpu == "arm" && !(current_os == "linux" || host_os == "mac")) {
 } else if (is_mingw) {
   print("openssl selected mingw64")
   openssl_selected_platform = "mingw64"
+} else if (current_cpu == "arm" && current_os == "android") {
+  print("openssl selected linux-armv4")
+  openssl_selected_platform = "linux-armv4"
+} else if (current_cpu == "arm64" && current_os == "android") {
+  print("openssl selected linux-aarch64")
+  openssl_selected_platform = "linux-aarch64"
 }
 print(
     "openssl detecting os done. openssl_selected_platform = ${openssl_selected_platform}")
