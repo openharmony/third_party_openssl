@@ -169,7 +169,7 @@ config("crypto_config_public") {
   }
 }
 
-ohos_source_set("crypto_source") {
+ohos_source_set("crypto_source_compatible") {
   sources = [
     "crypto/aes/aes_cbc.c",
     "crypto/aes/aes_cfb.c",
@@ -916,19 +916,19 @@ ohos_source_set("crypto_source") {
   public_configs = [ ":crypto_config_public" ]
 }
 
-ohos_static_library("libcrypto_static") {
-  deps = [ ":crypto_source" ]
+ohos_static_library("libcrypto_static_compatible") {
+  deps = [ ":crypto_source_compatible" ]
   public_configs = [ ":crypto_config_public" ]
   complete_static_lib = true
 }
 
 if (is_mingw || is_mac) {
-  ohos_shared_library("libcrypto_restool") {
+  ohos_shared_library("libcrypto_restool_compatible") {
     if (is_mingw) {
       lib_dirs = [ "//prebuilts/mingw-w64/ohos/linux-x86_64/clang-mingw/x86_64-w64-mingw32/lib" ]
       libs = [ "ws2_32" ]
     }
-    deps = [ ":crypto_source" ]
+    deps = [ ":crypto_source_compatible" ]
     subsystem_name = "security"
     part_name = "huks"
     public_configs = [ ":crypto_config_public" ]
@@ -939,12 +939,12 @@ if (is_mingw || is_mac) {
   }
 }
 
-ohos_shared_library("libcrypto_shared") {
+ohos_shared_library("libcrypto_shared_compatible") {
   if (is_mingw) {
     lib_dirs = [ "//prebuilts/mingw-w64/ohos/linux-x86_64/clang-mingw/x86_64-w64-mingw32/lib" ]
     libs = [ "ws2_32" ]
   }
-  deps = [ ":crypto_source" ]
+  deps = [ ":crypto_source_compatible" ]
   output_name = "libcrypto_openssl"
   subsystem_name = "security"
   part_name = "huks"
@@ -1027,7 +1027,7 @@ config("ssl_config_public") {
   include_dirs = [ "//third_party/openssl/include" ]
 }
 
-ohos_source_set("ssl_source") {
+ohos_source_set("ssl_source_compatible") {
   sources = [
     "ssl/bio_ssl.c",
     "ssl/d1_lib.c",
@@ -1078,10 +1078,10 @@ ohos_source_set("ssl_source") {
   public_configs = [ ":ssl_config" ]
 }
 
-ohos_shared_library("libssl_shared") {
+ohos_shared_library("libssl_shared_compatible") {
   deps = [
-    ":libcrypto_shared",
-    ":ssl_source",
+    ":libcrypto_shared_compatible",
+    ":ssl_source_compatible",
   ]
 
   if (is_mingw) {
