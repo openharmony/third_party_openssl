@@ -13,7 +13,7 @@
         "en": "README.md"
     },
     "component": {
-        "name": "thirdparty_openssl",
+        "name": "openssl",
         "subsystem": "thirdparty",
         "syscap": [],
         "features": [],
@@ -23,7 +23,7 @@
         "deps": {
             "components": [],
             "third_party": [
-                "thirdparty_openssl"
+                "openssl"
             ]
         },
         "build": {
