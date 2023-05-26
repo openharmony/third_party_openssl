@@ -14,7 +14,7 @@
     },
     "component": {
         "name": "thirdparty_openssl",
-        "subsystem": "",
+        "subsystem": "thirdparty",
         "syscap": [],
         "features": [],
         "adapted_system_type": [],
@@ -22,7 +22,9 @@
         "ram": "",
         "deps": {
             "components": [],
-            "third_party": []
+            "third_party": [
+                "thirdparty_openssl"
+            ]
         },
         "build": {
             "sub_component": [],
