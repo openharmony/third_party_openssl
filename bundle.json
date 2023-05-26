@@ -22,9 +22,7 @@
         "ram": "",
         "deps": {
             "components": [],
-            "third_party": [
-                "openssl"
-            ]
+            "third_party": []
         },
         "build": {
             "sub_component": [],

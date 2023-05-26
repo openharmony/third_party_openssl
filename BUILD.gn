@@ -1456,8 +1456,8 @@ if (is_mingw || is_mac) {
       libs = [ "ws2_32" ]
     }
     deps = [ ":crypto_source" ]
-    subsystem_name = "security"
-    part_name = "huks"
+    subsystem_name = "thirdparty"
+    part_name = "openssl"
     public_configs = [ ":crypto_config_public" ]
     install_images = [
       "system",
@@ -1473,8 +1473,8 @@ ohos_shared_library("libcrypto_shared") {
   }
   deps = [ ":crypto_source" ]
   output_name = "libcrypto_openssl"
-  subsystem_name = "security"
-  part_name = "huks"
+  subsystem_name = "thirdparty"
+  part_name = "openssl"
   public_configs = [ ":crypto_config_public" ]
   install_images = [
     "system",
