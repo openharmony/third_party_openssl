@@ -170,6 +170,8 @@ config("crypto_config_public") {
 }
 
 ohos_source_set("crypto_source_compatible") {
+  subsystem_name = "thirdparty"
+  part_name = "openssl"
   sources = [
     "crypto/aes/aes_cbc.c",
     "crypto/aes/aes_cfb.c",
@@ -917,6 +919,8 @@ ohos_source_set("crypto_source_compatible") {
 }
 
 ohos_static_library("libcrypto_static_compatible") {
+  subsystem_name = "thirdparty"
+  part_name = "openssl"
   deps = [ ":crypto_source_compatible" ]
   public_configs = [ ":crypto_config_public" ]
   complete_static_lib = true
@@ -995,6 +999,8 @@ config("ssl_config_public") {
 }
 
 ohos_source_set("ssl_source_compatible") {
+  subsystem_name = "thirdparty"
+  part_name = "openssl"
   sources = [
     "ssl/bio_ssl.c",
     "ssl/d1_lib.c",
