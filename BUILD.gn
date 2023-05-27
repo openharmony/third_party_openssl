@@ -646,6 +646,8 @@ libdefault_common_sources = [
 ]
 
 ohos_source_set("crypto_source") {
+  subsystem_name = "thirdparty"
+  part_name = "openssl"
   sources = [
     "crypto/aes/aes_cfb.c",
     "crypto/aes/aes_ecb.c",
@@ -1444,6 +1446,8 @@ ohos_source_set("crypto_source") {
 }
 
 ohos_static_library("libcrypto_static") {
+  subsystem_name = "thirdparty"
+  part_name = "openssl"
   deps = [ ":crypto_source" ]
   public_configs = [ ":crypto_config_public" ]
   complete_static_lib = true
@@ -1456,8 +1460,8 @@ if (is_mingw || is_mac) {
       libs = [ "ws2_32" ]
     }
     deps = [ ":crypto_source" ]
-    subsystem_name = "security"
-    part_name = "huks"
+    subsystem_name = "thirdparty"
+    part_name = "openssl"
     public_configs = [ ":crypto_config_public" ]
     install_images = [
       "system",
@@ -1473,8 +1477,8 @@ ohos_shared_library("libcrypto_shared") {
   }
   deps = [ ":crypto_source" ]
   output_name = "libcrypto_openssl"
-  subsystem_name = "security"
-  part_name = "huks"
+  subsystem_name = "thirdparty"
+  part_name = "openssl"
   public_configs = [ ":crypto_config_public" ]
   install_images = [
     "system",
@@ -1513,6 +1517,8 @@ config("ssl_config_public") {
 }
 
 ohos_source_set("ssl_source") {
+  subsystem_name = "thirdparty"
+  part_name = "openssl"
   sources = [
     "ssl/bio_ssl.c",
     "ssl/d1_lib.c",
@@ -1571,6 +1577,8 @@ ohos_source_set("ssl_source") {
 }
 
 ohos_static_library("libssl_static") {
+  subsystem_name = "thirdparty"
+  part_name = "openssl"
   deps = [ ":ssl_source" ]
   public_configs = [ ":ssl_config_public" ]
   complete_static_lib = true
@@ -1588,8 +1596,8 @@ ohos_shared_library("libssl_shared") {
   }
 
   output_name = "libssl_openssl"
-  subsystem_name = "developtools"
-  part_name = "profiler"
+  subsystem_name = "thirdparty"
+  part_name = "openssl"
 
   public_configs = [
     ":crypto_config_public",
