@@ -13,8 +13,8 @@
         "en": "README.md"
     },
     "component": {
-        "name": "openssl",
-        "subsystem": "thirdparty",
+        "name": "thirdparty_openssl",
+        "subsystem": "",
         "syscap": [],
         "features": [],
         "adapted_system_type": [],
