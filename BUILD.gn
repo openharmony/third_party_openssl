@@ -495,10 +495,22 @@ if (openssl_selected_platform == "linux-armv4") {
   crypto_config_current_platform_cflags += crypto_config_mingw64_cflags
 }
 
+mingw32_libs_path = []
+mingw32_libs = []
+if (is_mingw || is_win) {
+  mingw32_libs_path += [ "//prebuilts/mingw-w64/ohos/linux-x86_64/clang-mingw/x86_64-w64-mingw32/lib" ]
+  mingw32_libs += [
+    "ws2_32",
+    "crypt32",
+  ]
+}
+
 config("crypto_config_private") {
   include_dirs = crypto_config_common_private_include_dirs
   cflags = crypto_config_common_cflags + crypto_config_current_platform_cflags +
            openssl_internal_cflags
+  lib_dirs = mingw32_libs_path
+  libs = mingw32_libs
 }
 
 config("crypto_config_public") {
@@ -1494,10 +1506,6 @@ ohos_static_library("libcrypto_static") {
 
 if (is_mingw || is_mac) {
   ohos_shared_library("libcrypto_restool") {
-    if (is_mingw) {
-      lib_dirs = [ "//prebuilts/mingw-w64/ohos/linux-x86_64/clang-mingw/x86_64-w64-mingw32/lib" ]
-      libs = [ "ws2_32" ]
-    }
     deps = [ ":crypto_source" ]
     subsystem_name = "thirdparty"
     part_name = "openssl"
@@ -1510,10 +1518,6 @@ if (is_mingw || is_mac) {
 }
 
 ohos_shared_library("libcrypto_shared") {
-  if (is_mingw) {
-    lib_dirs = [ "//prebuilts/mingw-w64/ohos/linux-x86_64/clang-mingw/x86_64-w64-mingw32/lib" ]
-    libs = [ "ws2_32" ]
-  }
   deps = [ ":crypto_source" ]
   output_name = "libcrypto_openssl"
   subsystem_name = "thirdparty"
@@ -1628,11 +1632,6 @@ ohos_shared_library("libssl_shared") {
     ":libcrypto_shared",
     ":ssl_source",
   ]
-
-  if (is_mingw) {
-    lib_dirs = [ "//prebuilts/mingw-w64/ohos/linux-x86_64/clang-mingw/x86_64-w64-mingw32/lib" ]
-    libs = [ "ws2_32" ]
-  }
 
   output_name = "libssl_openssl"
   subsystem_name = "thirdparty"
