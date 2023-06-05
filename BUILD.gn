@@ -515,6 +515,7 @@ config("crypto_config_private") {
 
 config("crypto_config_public") {
   include_dirs = crypto_config_common_public_include_dirs
+  libs = mingw32_libs
 }
 
 libcommon_common_sources = [
