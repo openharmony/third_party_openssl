@@ -1,0 +1,24 @@
+openssl_conf = openssl_init
+
+[openssl_init]
+providers = provider_sect
+ssl_conf = ssl_conf_sect
+
+[provider_sect]
+# https://wiki.openssl.org/index.php/OpenSSL_3.0#Providers
+default = default_sect
+legacy = legacy_sect
+
+[default_sect]
+activate = 1
+
+[legacy_sect]
+activate = 1
+
+[ssl_conf_sect]
+system_default = ssl_conf_system_default_sect
+
+[ssl_conf_system_default_sect]
+# https://github.com/openssl/openssl/issues/21200
+# https://www.openssl.org/docs/manmaster/man3/SSL_CONF_cmd.html#Options
+Options = UnsafeLegacyRenegotiation
