@@ -1540,7 +1540,10 @@ ohos_shared_library("libcrypto_shared") {
   output_name = "libcrypto_openssl"
   subsystem_name = "thirdparty"
   part_name = "openssl"
-  innerapi_tags = [ "platformsdk" ]
+  innerapi_tags = [
+    "platformsdk",
+    "chipsetsdk",
+  ]
   public_configs = [ ":crypto_config_public" ]
   install_images = [
     "system",
