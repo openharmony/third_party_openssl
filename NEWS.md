@@ -17,6 +17,7 @@ OpenSSL Releases
 
 OpenSSL 3.0
 -----------
+  * Do not ignore empty associated data entries with AES-SIV ([CVE-2023-2975])
   * Mitigate for very slow `OBJ_obj2txt()` performance with gigantic OBJECT
     IDENTIFIER sub-identities.  ([CVE-2023-2650])
   * Fixed documentation of X509_VERIFY_PARAM_add0_policy() ([CVE-2023-0466])
@@ -1424,6 +1425,7 @@ OpenSSL 0.9.x
 
 <!-- Links -->
 
+[CVE-2023-2975]: https://www.openssl.org/news/vulnerabilities.html#CVE-2023-2975
 [CVE-2023-2650]: https://www.openssl.org/news/vulnerabilities.html#CVE-2023-2650
 [CVE-2023-0466]: https://www.openssl.org/news/vulnerabilities.html#CVE-2023-0466
 [CVE-2023-1255]: https://www.openssl.org/news/vulnerabilities.html#CVE-2023-1255
