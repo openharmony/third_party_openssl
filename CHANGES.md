@@ -28,7 +28,24 @@ breaking changes, and mappings for the large list of deprecated functions.
 
 [Migration guide]: https://github.com/openssl/openssl/tree/master/doc/man7/migration_guide.pod
 
- * Fix DH_check() excessive time with over sized modulus
+ * Fix excessive time spent checking DH q parameter value.
+
+   The function DH_check() performs various checks on DH parameters. After
+   fixing CVE-2023-3446 it was discovered that a large q parameter value can
+   also trigger an overly long computation during some of these checks.
+   A correct q value, if present, cannot be larger than the modulus p
+   parameter, thus it is unnecessary to perform these checks if q is larger
+   than p.
+
+   If DH_check() is called with such q parameter value,
+   DH_CHECK_INVALID_Q_VALUE return flag is set and the computationally
+   intensive checks are skipped.
+
+   ([CVE-2023-3817])
+
+   *Tomáš Mráz*
+
+ * Fix DH_check() excessive time with over sized modulus.
 
    The function DH_check() performs various checks on DH parameters. One of
    those checks confirms that the modulus ("p" parameter) is not too large.
@@ -65,7 +82,7 @@ breaking changes, and mappings for the large list of deprecated functions.
    has to skip calls to `EVP_DecryptUpdate()` for empty associated data
    entries.
 
-   *Tomas Mraz*
+   *Tomáš Mráz*
 
  * Mitigate for the time it takes for `OBJ_obj2txt` to translate gigantic
    OBJECT IDENTIFIER sub-identifiers to canonical numeric text form.
@@ -19514,6 +19531,7 @@ ndif
 
 <!-- Links -->
 
+[CVE-2023-3817]: https://www.openssl.org/news/vulnerabilities.html#CVE-2023-3817
 [CVE-2023-3446]: https://www.openssl.org/news/vulnerabilities.html#CVE-2023-3446
 [CVE-2023-2975]: https://www.openssl.org/news/vulnerabilities.html#CVE-2023-2975
 [CVE-2023-2650]: https://www.openssl.org/news/vulnerabilities.html#CVE-2023-2650
