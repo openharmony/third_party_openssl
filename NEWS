@@ -4,6 +4,8 @@
 
   This file gives a brief overview of the major changes between each OpenSSL
   release. For more details please read the CHANGES file.
+      o Fix POLY1305 MAC implementation corrupting XMM registers on Windows
+        (CVE-2023-4807)
       o Fix excessive time spent checking DH q parameter value (CVE-2023-3817)
       o Fix DH_check() excessive time with over sized modulus (CVE-2023-3446)
       o Fixed documentation of X509_VERIFY_PARAM_add0_policy() (CVE-2023-0466)
