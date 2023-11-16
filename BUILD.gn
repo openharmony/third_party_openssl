@@ -11,7 +11,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import("//build/config/config.gni")
 import("//build/ohos.gni")
 
 print("openssl detecting os now...")
@@ -1538,16 +1537,7 @@ ohos_shared_library("libcrypto_shared") {
     ":crypto_source",
     ":openssl.cnf",
   ]
-  if (current_os == "ios") {
-    ldflags = [
-      "-Wl",
-      "-install_name",
-      "@rpath/libcrypto_openssl.framework/libcrypto_openssl",
-    ]
-    output_name = "crypto_openssl"
-  } else {
-    output_name = "libcrypto_openssl"
-  }
+  output_name = "libcrypto_openssl"
   subsystem_name = "thirdparty"
   part_name = "openssl"
   innerapi_tags = [
@@ -1559,14 +1549,6 @@ ohos_shared_library("libcrypto_shared") {
     "system",
     "updater",
   ]
-}
-
-if (current_os == "ios") {
-  ohos_combine_darwin_framework("libcrypto_openssl") {
-    deps = [ ":libcrypto_shared" ]
-    subsystem_name = "thirdparty"
-    part_name = "openssl"
-  }
 }
 
 unused_variables = []
@@ -1673,16 +1655,8 @@ ohos_shared_library("libssl_shared") {
     ":openssl.cnf",
     ":ssl_source",
   ]
-  if (current_os == "ios") {
-    ldflags = [
-      "-Wl",
-      "-install_name",
-      "@rpath/libssl_openssl.framework/libssl_openssl",
-    ]
-    output_name = "ssl_openssl"
-  } else {
-    output_name = "libssl_openssl"
-  }
+
+  output_name = "libssl_openssl"
   subsystem_name = "thirdparty"
   part_name = "openssl"
 
@@ -1698,14 +1672,6 @@ ohos_shared_library("libssl_shared") {
     # compile libssl_openssl.z.so to the updater image for wpa to use
     "updater",
   ]
-}
-
-if (current_os == "ios") {
-  ohos_combine_darwin_framework("libssl_openssl") {
-    deps = [ ":libssl_shared" ]
-    subsystem_name = "thirdparty"
-    part_name = "openssl"
-  }
 }
 
 ohos_static_library("libapps") {
