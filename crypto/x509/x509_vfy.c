@@ -1,5 +1,5 @@
 /*
- * Copyright 1995-2022 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 1995-2023 The OpenSSL Project Authors. All Rights Reserved.
  *
  * Licensed under the Apache License 2.0 (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
@@ -3421,7 +3421,7 @@ static int check_curve(X509 *cert)
         ret = EVP_PKEY_get_int_param(pkey,
                                      OSSL_PKEY_PARAM_EC_DECODED_FROM_EXPLICIT_PARAMS,
                                      &val);
-        return ret < 0 ? ret : !val;
+        return ret == 1 ? !val : -1;
     }
 
     return 1;

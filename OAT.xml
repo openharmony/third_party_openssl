@@ -30,23 +30,11 @@
                 <policyitem type="compatibility" name="InvalidLicense" path="external/perl/Text-Template-1.56/Changes" desc="release file,not need license declare"/>
                 <policyitem type="compatibility" name="GPL-1.0+" path="external/perl/Text-Template-1.56/LICENSE" desc="Compile tool not runs target, running on host build environment only."/>
                 <policyitem type="compatibility" name="InvalidLicense" path="external/perl/Text-Template-1.56/lib/Text/Template.pm" desc="release file,not need license declare"/>
-                <policyitem type="compatibility" name="OpenSSL" path="compatible/.*" desc="OpenSSL license"/>
-                <policyitem type="compatibility" name="GPL-2.0+" path="compatible/external/perl/Text-Template-1.46/.*" desc="BSD-like with advertising clause or GNU GPL v2 or later"/>
-                <policyitem type="compatibility" name="LGPLStyleLicense" path="compatible/crypto/.*" desc="Compile tool not runs target, running on host build environment only."/>
-                <policyitem type="compatibility" name="GPLStyleLicense" path="compatible/crypto/.*" desc="Compile tool not runs target, running on host build environment only."/>
-                <policyitem type="compatibility" name="OpenSSL|LGPLStyleLicense" path="compatible/crypto/.*" desc="Compile tool not runs target, running on host build environment only."/>
-                <policyitem type="compatibility" name="OpenSSL|GPLStyleLicense" path="compatible/crypto/.*" desc="Compile tool not runs target, running on host build environment only."/>
-                <policyitem type="compatibility" name="Artistic-1.0-Perl" path="compatible/external/perl/Text-Template-1.46/.*" desc="Compile tool not runs target, running on host build environment only."/>
-                <policyitem type="compatibility" name="InvalidLicense" path="compatible/external/perl/Text-Template-1.46/lib/Text/Template.pm" desc="release file,not need license declare"/>
-                <policyitem type="compatibility" name="InvalidLicense" path="compatible/NOTES.PERL" desc="release file,not need license declare"/>
             </policy>
         </policylist>
         <filefilterlist>
             <filefilter name="binaryFileTypePolicyFilter" desc="Filters for binary file policies">
                 <filteritem type="filepath" name=".*" desc="test or certification binary."/>
-            </filefilter>
-            <filefilter name="defaultPolicyFilter" desc="Filters for compatibility, license header policies">
-                <filteritem type="filepath" name="build_all_generated/.*" desc="make build_all_generated output"/>
             </filefilter>
         </filefilterlist>
     </oatconfig>
