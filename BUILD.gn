@@ -1746,7 +1746,10 @@ ohos_shared_library("libssl_shared") {
   subsystem_name = "thirdparty"
   part_name = "openssl"
 
-  innerapi_tags = [ "platformsdk" ]
+  innerapi_tags = [
+    "platformsdk",
+    "chipsetsdk",
+  ]
   public_configs = [
     ":crypto_config_public",
     ":ssl_config_public",
