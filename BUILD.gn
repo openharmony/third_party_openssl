@@ -1599,7 +1599,6 @@ if (is_mingw || is_mac) {
 ohos_shared_library("libcrypto_shared") {
   if (netstack_feature_http3) {
     version_script = "libcrypto_shared.map"
-    #prinf("123123123yylyyl")
   }
   sources = []
   configs = []
