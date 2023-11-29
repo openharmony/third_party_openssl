@@ -14,6 +14,9 @@
 import("//build/config/config.gni")
 import("//build/ohos.gni")
 
+declare_args() {
+  SSL_VERSION_SCRIPT = false
+}
 
 print("openssl detecting os now...")
 print("current_cpu = ${current_cpu}")
@@ -1573,7 +1576,6 @@ ohos_static_library("libcrypto_static") {
 
 if (is_mingw || is_mac) {
   ohos_shared_library("libcrypto_restool") {
-    version_script = "libcrypto_restool.map"
     sources = []
     configs = []
     deps = [ ":crypto_source" ]
@@ -1592,7 +1594,9 @@ if (is_mingw || is_mac) {
 }
 
 ohos_shared_library("libcrypto_shared") {
-  version_script = "libcrypto_shared.map"
+  if (SSL_VERSION_SCRIPT && build_ohos_sdk == false) {
+    version_script = "libcrypto_shared.map"
+  }
   sources = []
   configs = []
   deps = [
@@ -1736,7 +1740,9 @@ ohos_shared_library("libssl_shared") {
     ":openssl.cnf",
     ":ssl_source",
   ]
-  version_script = "libssl_shared.map"
+  if (SSL_VERSION_SCRIPT && build_ohos_sdk == false) {
+    version_script = "libssl_shared.map"
+  }
   if (current_os == "ios") {
     ldflags = [
       "-Wl",
