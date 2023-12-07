@@ -22,3 +22,15 @@ system_default = ssl_conf_system_default_sect
 # https://github.com/openssl/openssl/issues/21200
 # https://www.openssl.org/docs/manmaster/man3/SSL_CONF_cmd.html#Options
 Options = UnsafeLegacyRenegotiation
+
+
+# the following `CipherString` and `MinProtocol` are meant to solve 'legacy sigalg disallowed or unsupported' problem
+# https://github.com/openssl/openssl/issues/21276
+# https://github.com/openssl/openssl/issues/19867
+
+# https://www.openssl.org/docs/manmaster/man3/SSL_CONF_cmd.html#SUPPORTED-CONFIGURATION-FILE-COMMANDS
+# https://www.openssl.org/docs/manmaster/man1/openssl-ciphers.html#CIPHER-STRINGS
+CipherString = DEFAULT:@SECLEVEL=0
+
+# https://www.openssl.org/docs/manmaster/man3/SSL_CONF_cmd.html#MinProtocol
+MinProtocol = None
