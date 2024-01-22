@@ -11,7 +11,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import("//build/config/config.gni")
+import("//build/ohos_var.gni")
+declare_args() {
+  if (defined(is_double_framework) && is_double_framework) {
+    compatible_with_legacy_build_system = true
+  } else {
+    compatible_with_legacy_build_system = false
+  }
+}
+
+if (!compatible_with_legacy_build_system) {
+  import("//build/config/config.gni")
+}
 import("//build/ohos.gni")
 
 print("openssl detecting os now...")
@@ -322,10 +333,13 @@ openssl_internal_cflags = [
 
   "-Wno-error=implicit-fallthrough",
   "-Wno-error=sign-compare",
-
-  # Fix llvm-15 build error
-  "-Wno-unused-but-set-variable",
 ]
+if (!compatible_with_legacy_build_system) {
+  openssl_internal_cflags += [
+    # Fix llvm-15 build error
+    "-Wno-unused-but-set-variable",
+  ]
+}
 
 # 升级修改适配检查点9 内部公共头文件目录列表
 crypto_config_common_private_include_dirs = [
@@ -361,8 +375,13 @@ crypto_config_common_public_include_dirs = [
 # located at /system/etc/
 ohos_prebuilt_etc("openssl.cnf") {
   source = "open_harmony_openssl_config/openssl.cnf"
-  subsystem_name = "thirdparty"
-  part_name = "openssl"
+  if (compatible_with_legacy_build_system) {
+    subsystem_name = "security"
+    part_name = "huks"
+  } else {
+    subsystem_name = "thirdparty"
+    part_name = "openssl"
+  }
 }
 
 # 升级修改适配检查点10 内部公共编译选项宏列表
@@ -750,8 +769,10 @@ liblegacy_sources = [
 ]
 
 ohos_source_set("crypto_source") {
-  subsystem_name = "thirdparty"
-  part_name = "openssl"
+  if (!compatible_with_legacy_build_system) {
+    subsystem_name = "thirdparty"
+    part_name = "openssl"
+  }
 
   # 升级修改适配检查点20 libcrypto 原目录源码列表
   sources = [
@@ -1563,8 +1584,10 @@ ohos_source_set("crypto_source") {
 }
 
 ohos_static_library("libcrypto_static") {
-  subsystem_name = "thirdparty"
-  part_name = "openssl"
+  if (!compatible_with_legacy_build_system) {
+    subsystem_name = "thirdparty"
+    part_name = "openssl"
+  }
   deps = [ ":crypto_source" ]
   public_configs = [ ":crypto_config_public" ]
   complete_static_lib = true
@@ -1579,8 +1602,13 @@ if (is_mingw || is_mac) {
       sources += [ "crypto/dllmain.c" ]
       configs += [ ":crypto_config_private" ]
     }
-    subsystem_name = "thirdparty"
-    part_name = "openssl"
+    if (compatible_with_legacy_build_system) {
+      subsystem_name = "security"
+      part_name = "huks"
+    } else {
+      subsystem_name = "thirdparty"
+      part_name = "openssl"
+    }
     public_configs = [ ":crypto_config_public" ]
     install_images = [
       "system",
@@ -1610,12 +1638,19 @@ ohos_shared_library("libcrypto_shared") {
   } else {
     output_name = "libcrypto_openssl"
   }
-  subsystem_name = "thirdparty"
-  part_name = "openssl"
-  innerapi_tags = [
-    "platformsdk",
-    "chipsetsdk",
-  ]
+  if (compatible_with_legacy_build_system) {
+    subsystem_name = "security"
+    part_name = "huks"
+  } else {
+    subsystem_name = "thirdparty"
+    part_name = "openssl"
+  }
+  if (!compatible_with_legacy_build_system) {
+    innerapi_tags = [
+      "platformsdk",
+      "chipsetsdk",
+    ]
+  }
   public_configs = [ ":crypto_config_public" ]
   install_images = [
     "system",
@@ -1662,8 +1697,10 @@ config("ssl_config_public") {
 }
 
 ohos_source_set("ssl_source") {
-  subsystem_name = "thirdparty"
-  part_name = "openssl"
+  if (!compatible_with_legacy_build_system) {
+    subsystem_name = "thirdparty"
+    part_name = "openssl"
+  }
 
   # 升级修改适配检查点27 libssl 源码列表
   sources = [
@@ -1720,8 +1757,10 @@ ohos_source_set("ssl_source") {
 }
 
 ohos_static_library("libssl_static") {
-  subsystem_name = "thirdparty"
-  part_name = "openssl"
+  if (!compatible_with_legacy_build_system) {
+    subsystem_name = "thirdparty"
+    part_name = "openssl"
+  }
   deps = [ ":ssl_source" ]
   public_configs = [ ":ssl_config_public" ]
   complete_static_lib = true
@@ -1743,13 +1782,20 @@ ohos_shared_library("libssl_shared") {
   } else {
     output_name = "libssl_openssl"
   }
-  subsystem_name = "thirdparty"
-  part_name = "openssl"
+  if (compatible_with_legacy_build_system) {
+    subsystem_name = "developtools"
+    part_name = "profiler"
+  } else {
+    subsystem_name = "thirdparty"
+    part_name = "openssl"
+  }
 
-  innerapi_tags = [
-    "platformsdk",
-    "chipsetsdk",
-  ]
+  if (!compatible_with_legacy_build_system) {
+    innerapi_tags = [
+      "platformsdk",
+      "chipsetsdk",
+    ]
+  }
   public_configs = [
     ":crypto_config_public",
     ":ssl_config_public",
@@ -1795,8 +1841,10 @@ ohos_static_library("libapps") {
   if (openssl_selected_platform == "mingw64") {
     sources += [ "apps/lib/win32_init.c" ]
   }
-  subsystem_name = "thirdparty"
-  part_name = "openssl"
+  if (!compatible_with_legacy_build_system) {
+    subsystem_name = "thirdparty"
+    part_name = "openssl"
+  }
   configs = [ ":crypto_config_private" ]
 }
 
@@ -1869,8 +1917,13 @@ ohos_executable("openssl") {
     ":openssl.cnf",
     ":openssl_build_all_generated",
   ]
-  subsystem_name = "thirdparty"
-  part_name = "openssl"
+  if (compatible_with_legacy_build_system) {
+    subsystem_name = "security"
+    part_name = "huks"
+  } else {
+    subsystem_name = "thirdparty"
+    part_name = "openssl"
+  }
   configs = [ ":crypto_config_private" ]
 }
 # 升级修改适配检查点 汇总
