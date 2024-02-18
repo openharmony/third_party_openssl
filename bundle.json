@@ -30,7 +30,22 @@
             "sub_component": [
                 "//third_party/openssl:openssl"
             ],
-            "inner_kits": [],
+            "inner_kits": [
+                {
+                    "header" : {
+                        "header_base": "//third_party/openssl/include",
+                        "header_files": []
+                    },
+                    "name" : "//third_party/openssl:libcrypto_shared"
+                },
+                {
+                    "header" : {
+                        "header_base": "//third_party/openssl/include",
+                        "header_files": []
+                    },
+                    "name" : "//third_party/openssl:libssl_shared"
+                }
+            ],
             "test": []
         }
     }
