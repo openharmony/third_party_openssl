@@ -43,7 +43,35 @@
                         "header_base": "//third_party/openssl/include",
                         "header_files": []
                     },
+                    "name" : "//third_party/openssl:libcrypto_static"
+                },
+                {
+                    "header" : {
+                        "header_base": "//third_party/openssl/include",
+                        "header_files": []
+                    },
                     "name" : "//third_party/openssl:libssl_shared"
+                },
+                {
+                    "header" : {
+                        "header_base": "//third_party/openssl/include",
+                        "header_files": []
+                    },
+                    "name" : "//third_party/openssl:libssl_static"
+                },
+                {
+                    "header" : {
+                        "header_base": "//third_party/openssl/include",
+                        "header_files": []
+                    },
+                    "name" : "//third_party/openssl:ssl_config_public"
+                },
+                {
+                    "header" : {
+                        "header_base": "//third_party/openssl/ssl",
+                        "header_files": []
+                    },
+                    "name" : "//third_party/openssl:ssl_source"
                 }
             ],
             "test": []
