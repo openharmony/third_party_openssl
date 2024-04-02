@@ -1692,14 +1692,8 @@ config("ssl_config_private") {
            openssl_internal_cflags
 }
 
-config("ssl_config_pub") {
+config("ssl_config_public") {
   include_dirs = crypto_config_common_public_include_dirs
-}
-
-ohos_shared_library("ssl_config_public") {
-  subsystem_name = "thirdparty"
-  part_name = "openssl"
-  public_configs = [ ":ssl_config_pub" ]
 }
 
 ohos_source_set("ssl_source") {
@@ -1758,7 +1752,7 @@ ohos_source_set("ssl_source") {
   ]
 
   configs = [ ":ssl_config_private" ]
-  public_configs = [ ":ssl_config_pub" ]
+  public_configs = [ ":ssl_config_public" ]
   deps = [ ":openssl_build_all_generated" ]
 }
 
@@ -1768,7 +1762,7 @@ ohos_static_library("libssl_static") {
     part_name = "openssl"
   }
   deps = [ ":ssl_source" ]
-  public_configs = [ ":ssl_config_pub" ]
+  public_configs = [ ":ssl_config_public" ]
   complete_static_lib = true
 }
 
@@ -1804,7 +1798,7 @@ ohos_shared_library("libssl_shared") {
   }
   public_configs = [
     ":crypto_config_public",
-    ":ssl_config_pub",
+    ":ssl_config_public",
   ]
 
   install_images = [
