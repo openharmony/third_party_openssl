@@ -18,6 +18,7 @@ declare_args() {
   } else {
     compatible_with_legacy_build_system = false
   }
+  openssl_enabled = true
 }
 
 if (!compatible_with_legacy_build_system) {
