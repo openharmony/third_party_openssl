@@ -36,6 +36,9 @@
                 },
                 {
                     "name" : "//third_party/openssl:libcrypto_static"
+                },
+                {
+                    "name" : "//third_party/openssl:libssl_shared"
                 }
             ],
             "test": []
