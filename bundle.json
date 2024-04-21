@@ -42,6 +42,15 @@
                 },
                 {
                     "name" : "//third_party/openssl:libssl_shared"
+                },
+                {
+                    "name" : "//third_party/openssl:libssl_static"
+                },
+                {
+                    "name" : "//third_party/openssl:ssl_config_pub"
+                },
+                {
+                    "name" : "//third_party/openssl:ssl_source"
                 }
             ],
             "test": []
