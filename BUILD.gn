@@ -1696,12 +1696,6 @@ config("ssl_config_public") {
   include_dirs = crypto_config_common_public_include_dirs
 }
 
-ohos_static_library("ssl_config_pub") {
-  subsystem_name = "thirdparty"
-  part_name = "openssl"
-  public_configs = [ ":ssl_config_public" ]
-}
-
 ohos_source_set("ssl_source") {
   if (!compatible_with_legacy_build_system) {
     subsystem_name = "thirdparty"
