@@ -10868,7 +10868,7 @@ int setup_tests(void)
 #if !defined(OPENSSL_NO_TLS1_2) && !defined(OPENSSL_NO_DYNAMIC_ENGINE)
     ADD_ALL_TESTS(test_pipelining, 6);
 #endif
-    ADD_ALLTESTS(test_multi_resume, 5);
+    ADD_ALL_TESTS(test_multi_resume, 5);
     return 1;
 
  err:
