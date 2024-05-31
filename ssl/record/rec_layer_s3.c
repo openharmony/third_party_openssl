@@ -16,6 +16,7 @@
 #include <openssl/rand.h>
 #include "record_local.h"
 #include "internal/packet.h"
+#include "internal/cryptlib.h"
 
 #if     defined(OPENSSL_SMALL_FOOTPRINT) || \
         !(      defined(AES_ASM) &&     ( \
