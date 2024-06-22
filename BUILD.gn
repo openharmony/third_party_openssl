@@ -37,7 +37,8 @@ if (current_cpu == "arm" && !(current_os == "linux" || host_os == "mac")) {
   openssl_selected_platform = "linux-armv4"
 } else if (current_cpu == "arm64" &&
            (!(current_os == "linux" || host_os == "mac") ||
-            current_os == "ohos")) {
+            current_os == "ohos" ||
+            (current_os == "linux" || host_os == "linux"))) {
   print("openssl selected linux-aarch64")
   openssl_selected_platform = "linux-aarch64"
 } else if ((current_cpu == "x64" || current_cpu == "x86_64") &&
