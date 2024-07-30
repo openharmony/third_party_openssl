@@ -16,7 +16,7 @@
         "name": "openssl",
         "subsystem": "thirdparty",
         "syscap": [],
-        "features": [],
+        "features": [ "openssl_enabled" ],
         "adapted_system_type": [
             "standard"
         ],
