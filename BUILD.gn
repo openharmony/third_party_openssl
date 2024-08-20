@@ -82,6 +82,9 @@ if (current_cpu == "arm" && !(current_os == "linux" || host_os == "mac")) {
 } else if (current_cpu == "arm64" && current_os == "android") {
   print("openssl selected linux-aarch64")
   openssl_selected_platform = "linux-aarch64"
+} else if (current_cpu == "loongarch64" && current_os == "ohos") {
+  print("openssl selected linux64-loongarch64")
+  openssl_selected_platform = "linux64-loongarch64"
 }
 print(
     "openssl detecting os done. openssl_selected_platform = ${openssl_selected_platform}")
@@ -220,6 +223,12 @@ if (build_with_liblegacy) {
       [ "${openssl_selected_platform_full_path}/engines/e_padlock-x86_64.s" ]
 }
 
+# 升级修改适配检查点2 libcrypto 不同平台汇编代码
+libcrypto_build_all_generated_linux_loongarch64_sources = [
+  "${openssl_selected_platform_full_path}/crypto/loongarch64cpuid.s",
+  "${openssl_selected_platform_full_path}/crypto/md5/md5-loongarch64.S",
+]
+
 # 升级修改适配检查点6 libcrypto 不同平台汇编代码
 libcrypto_build_all_generated_mingw64_sources = [
   "${openssl_selected_platform_full_path}/crypto/aes/aes-x86_64.s",
@@ -278,6 +287,9 @@ if (openssl_selected_platform == "linux-armv4") {
 } else if (openssl_selected_platform == "mingw64") {
   libcrypto_build_all_generated_selected_platform_sources +=
       libcrypto_build_all_generated_mingw64_sources
+} else if (openssl_selected_platform == "linux64-loongarch64") {
+  libcrypto_build_all_generated_selected_platform_sources +=
+      libcrypto_build_all_generated_linux_loongarch64_sources
 }
 
 # 升级修改适配检查点7 libcommon 生成的源码列表
@@ -368,6 +380,13 @@ if (!compatible_with_legacy_build_system) {
   openssl_internal_cflags += [
     # Fix llvm-15 build error
     "-Wno-unused-but-set-variable",
+  ]
+}
+
+if (current_cpu == "loongarch64") {
+  openssl_internal_cflags -= [
+    "-Wno-error=constant-conversion",
+    "-Wno-error=macro-redefined",
   ]
 }
 
@@ -590,6 +609,19 @@ if (build_with_liblegacy) {
   crypto_config_mingw64_cflags += [ "-DPADLOCK_ASM" ]
 }
 
+crypto_config_linux_loongarch64_cflags = [
+  "-DOPENSSL_USE_NODELETE",
+  "-fPIC",
+  "-pthread",
+  "-Wall",
+  "-O3",
+  "-DNDEBUG",
+  "-MMD",
+  "-MF",
+  "-DOPENSSL_BUILDING_OPENSSL",
+  "-DOPENSSL_PIC",
+]
+
 crypto_config_current_platform_cflags = []
 if (openssl_selected_platform == "linux-armv4") {
   crypto_config_current_platform_cflags += crypto_config_linux_armv4_cflags
@@ -605,6 +637,9 @@ if (openssl_selected_platform == "linux-armv4") {
   crypto_config_current_platform_cflags += crypto_config_linux_x86_64_cflags
 } else if (openssl_selected_platform == "mingw64") {
   crypto_config_current_platform_cflags += crypto_config_mingw64_cflags
+} else if (openssl_selected_platform == "linux64-loongarch64") {
+  crypto_config_current_platform_cflags +=
+      crypto_config_linux_loongarch64_cflags
 }
 
 mingw32_libs_path = []
@@ -1631,6 +1666,35 @@ ohos_source_set("crypto_source") {
       "crypto/bn/rsaz_exp.c",
       "crypto/bn/rsaz_exp_x2.c",
     ]
+  } else if (openssl_selected_platform == "linux64-loongarch64") {
+    sources += [
+      "crypto/aes/aes_cbc.c",
+      "crypto/aes/aes_core.c",
+      "crypto/bn/bn_asm.c",
+      "crypto/camellia/camellia.c",
+      "crypto/camellia/cmll_cbc.c",
+      "crypto/loongarchcap.c",
+      "crypto/rc4/rc4_enc.c",
+      "crypto/rc4/rc4_skey.c",
+      "crypto/whrlpool/wp_block.c",
+
+      # v_check bind_engine multi defined
+      "engines/e_afalg.c",
+
+      # ChaCha20_ctr32
+      "crypto/chacha/chacha_enc.c",
+
+      # ./crypto/sha/keccak1600.c:1096 SHA3_squeeze func
+      "crypto/sha/keccak1600.c",
+    ]
+
+    sources -= [
+      # ecp_nistz256_xxx func
+      "crypto/ec/ecp_nistz256.c",
+
+      # v_check bind_engine multi defined
+      "engines/e_capi.c",
+    ]
   }
 
   configs = [ ":crypto_config_private" ]
@@ -1732,6 +1796,7 @@ unused_variables += crypto_config_darwin64_x86_64_cc_cflags
 unused_variables += crypto_config_darwin64_arm64_cc_cflags
 unused_variables += crypto_config_linux_x86_64_cflags
 unused_variables += crypto_config_mingw64_cflags
+unused_variables += crypto_config_linux_loongarch64_cflags
 unused_variables += libcommon_common_sources
 unused_variables += libdefault_common_sources
 unused_variables += libcrypto_build_all_generated_linux_armv4_sources
@@ -1740,6 +1805,7 @@ unused_variables += libcrypto_build_all_generated_darwin64_x86_64_cc_sources
 unused_variables += libcrypto_build_all_generated_darwin64_arm64_cc_sources
 unused_variables += libcrypto_build_all_generated_linux_x86_64_sources
 unused_variables += libcrypto_build_all_generated_mingw64_sources
+unused_variables += libcrypto_build_all_generated_linux_loongarch64_sources
 
 config("ssl_config_private") {
   include_dirs = crypto_config_common_private_include_dirs
