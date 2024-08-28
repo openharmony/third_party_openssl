@@ -41,7 +41,7 @@ pushd ${build_all_generated_path}/${openssl_selected_platform}
     # no-shared affects the building of libcrypto*.dll and libssl*.dll,
     # not dynamically loadable modules (which are governed by the configuration option no-module / enable-module,
     # which is enabled by default).
-    configure_cmd="${openssl_source_path}/Configure ${openssl_selected_platform} no-shared no-module"
+    configure_cmd="${openssl_source_path}/Configure ${openssl_selected_platform} no-shared no-module no-filenames"
     echo $configure_cmd
     $configure_cmd
     make build_all_generated -j256 >/dev/null 2>&1
