@@ -18,6 +18,24 @@ declare_args() {
   } else {
     compatible_with_legacy_build_system = false
   }
+  if (defined(ohos_kernel_type) && ohos_kernel_type == "liteos_a") {
+    print(
+        "liteos_a doesn't support OPENSSL_cpuid_setup and liblegacy, disable them.")
+
+    # Enabling legacy on liteos_a will result in the following compilation error.
+    # [OHOS ERROR] [4756/5343] clang obj/third_party/openssl/engines/crypto_source.e_afalg.o
+    # [OHOS ERROR] FAILED: obj/third_party/openssl/engines/crypto_source.e_afalg.o
+    # [OHOS ERROR] ccache /home/user/openharmony/master/prebuilts/clang/ohos/linux-x86_64/llvm/bin/clang -D_XOPEN_SOURCE=700 -DOHOS_DEBUG -D__LITEOS__ -D__LITEOS_A__ -Oz -flto -mfloat-abi=softfp -mfpu=neon-vfpv4 -mfloat-abi=softfp -mfpu=neon-vfpv4 -mcpu=cortex-a7 -fno-common -fno-builtin -fno-strict-aliasing -Wall -fsigned-char -mno-unaligned-access -fno-omit-frame-pointer -fstack-protector-all -Wa,--noexecstack -DNDEBUG -DOPENSSL_BUILDING_OPENSSL -DOPENSSL_CPUID_OBJ -DOPENSSL_PIC -DENGINESDIR=\"\" -DMODULESDIR=\"\" -DOPENSSLDIR=\"/system/etc\" -DSTATIC_LEGACY -DOPENSSL_USE_NODELETE -fPIC -pthread -DAES_ASM -DBSAES_ASM -DECP_NISTZ256_ASM -DGHASH_ASM -DKECCAK1600_ASM -DOPENSSL_BN_ASM_GF2m -DOPENSSL_BN_ASM_MONT -DPOLY1305_ASM -DSHA1_ASM -DSHA256_ASM -DSHA512_ASM -Wall -Wno-error=int-conversion -Wno-error=constant-conversion -Wno-error=shift-count-overflow -Wno-error=macro-redefined -Wno-error=implicit-fallthrough -Wno-error=sign-compare -Wno-unused-but-set-variable --target=arm-liteos-ohos --sysroot=/home/user/openharmony/master/out/arm_virt/qemu_small_system_demo/sysroot -std=c99 -I../../../third_party/openssl -I../../../third_party/openssl/crypto -I../../../third_party/openssl/include -I../../../third_party/openssl/providers/common/include -I../../../third_party/openssl/providers/implementations/include -I../../../third_party/openssl/apps/include -I../../../third_party/openssl/crypto/bn -I../../../third_party/openssl/crypto/ec -I../../../third_party/openssl/crypto/ec/curve448 -I../../../third_party/openssl/crypto/modes -I../../../third_party/openssl/crypto/rsa -I../../../third_party/openssl/providers/common/include/prov -Iobj/third_party/openssl/build_all_generated/linux-armv4/apps -Iobj/third_party/openssl/build_all_generated/linux-armv4/crypto -Iobj/third_party/openssl/build_all_generated/linux-armv4/include -Iobj/third_party/openssl/build_all_generated/linux-armv4/include/crypto -Iobj/third_party/openssl/build_all_generated/linux-armv4/include/openssl -Iobj/third_party/openssl/build_all_generated/linux-armv4/providers/common/include -Iobj/third_party/openssl/build_all_generated/linux-armv4/providers/common/include/prov -c ../../../third_party/openssl/engines/e_afalg.c -o obj/third_party/openssl/engines/crypto_source.e_afalg.o
+    # [OHOS ERROR] ../../../third_party/openssl/engines/e_afalg.c:27:10: fatal error: 'linux/version.h' file not found
+    # [OHOS ERROR] #include <linux/version.h>
+    # [OHOS ERROR]          ^~~~~~~~~~~~~~~~~
+    # [OHOS ERROR] 1 error generated.
+
+    # see OPENSSL_cpuid_setup in crypto/armcap.c
+    build_with_liblegacy = false
+  } else {
+    build_with_liblegacy = true
+  }
   openssl_enabled = true
 }
 
@@ -140,8 +158,11 @@ libcrypto_build_all_generated_darwin64_x86_64_cc_sources = [
   "${openssl_selected_platform_full_path}/crypto/sha/sha512-x86_64.s",
   "${openssl_selected_platform_full_path}/crypto/whrlpool/wp-x86_64.s",
   "${openssl_selected_platform_full_path}/crypto/x86_64cpuid.s",
-  "${openssl_selected_platform_full_path}/engines/e_padlock-x86_64.s",
 ]
+if (build_with_liblegacy) {
+  libcrypto_build_all_generated_darwin64_x86_64_cc_sources +=
+      [ "${openssl_selected_platform_full_path}/engines/e_padlock-x86_64.s" ]
+}
 
 # 升级修改适配检查点4 libcrypto 不同平台汇编代码
 libcrypto_build_all_generated_darwin64_arm64_cc_sources = [
@@ -193,8 +214,11 @@ libcrypto_build_all_generated_linux_x86_64_sources = [
   "${openssl_selected_platform_full_path}/crypto/sha/sha512-x86_64.s",
   "${openssl_selected_platform_full_path}/crypto/whrlpool/wp-x86_64.s",
   "${openssl_selected_platform_full_path}/crypto/x86_64cpuid.s",
-  "${openssl_selected_platform_full_path}/engines/e_padlock-x86_64.s",
 ]
+if (build_with_liblegacy) {
+  libcrypto_build_all_generated_linux_x86_64_sources +=
+      [ "${openssl_selected_platform_full_path}/engines/e_padlock-x86_64.s" ]
+}
 
 # 升级修改适配检查点6 libcrypto 不同平台汇编代码
 libcrypto_build_all_generated_mingw64_sources = [
@@ -229,8 +253,11 @@ libcrypto_build_all_generated_mingw64_sources = [
   "${openssl_selected_platform_full_path}/crypto/sha/sha512-x86_64.s",
   "${openssl_selected_platform_full_path}/crypto/whrlpool/wp-x86_64.s",
   "${openssl_selected_platform_full_path}/crypto/x86_64cpuid.s",
-  "${openssl_selected_platform_full_path}/engines/e_padlock-x86_64.s",
 ]
+if (build_with_liblegacy) {
+  libcrypto_build_all_generated_mingw64_sources +=
+      [ "${openssl_selected_platform_full_path}/engines/e_padlock-x86_64.s" ]
+}
 
 libcrypto_build_all_generated_selected_platform_sources = []
 if (openssl_selected_platform == "linux-armv4") {
@@ -291,6 +318,7 @@ print(exec_script(
             rebase_path("//third_party/openssl"),
             rebase_path("${target_out_dir}/build_all_generated"),
             openssl_selected_platform,
+            "${build_with_liblegacy}",
           ],
           "string",
           []))
@@ -414,9 +442,10 @@ crypto_config_common_cflags = [
   # /usr/local/ssl
   # we set the variable as the following to locate openssl.cnf
   "-DOPENSSLDIR=\"/system/etc\"",
-
-  "-DSTATIC_LEGACY",
 ]
+if (build_with_liblegacy) {
+  crypto_config_common_cflags += [ "-DSTATIC_LEGACY" ]
+}
 
 # 升级修改适配检查点11 内部不同平台编译选项列表
 crypto_config_linux_armv4_cflags = [
@@ -470,7 +499,6 @@ crypto_config_darwin64_x86_64_cc_cflags = [
   "-DOPENSSL_BN_ASM_GF2m",
   "-DOPENSSL_BN_ASM_MONT",
   "-DOPENSSL_BN_ASM_MONT5",
-  "-DPADLOCK_ASM",
   "-DPOLY1305_ASM",
   "-DSHA1_ASM",
   "-DSHA256_ASM",
@@ -479,6 +507,9 @@ crypto_config_darwin64_x86_64_cc_cflags = [
   "-DWHIRLPOOL_ASM",
   "-DX25519_ASM",
 ]
+if (build_with_liblegacy) {
+  crypto_config_darwin64_x86_64_cc_cflags += [ "-DPADLOCK_ASM" ]
+}
 
 # 升级修改适配检查点14 内部不同平台编译选项列表
 crypto_config_darwin64_arm64_cc_cflags = [
@@ -515,7 +546,6 @@ crypto_config_linux_x86_64_cflags = [
   "-DOPENSSL_BN_ASM_GF2m",
   "-DOPENSSL_BN_ASM_MONT",
   "-DOPENSSL_BN_ASM_MONT5",
-  "-DPADLOCK_ASM",
   "-DPOLY1305_ASM",
   "-DSHA1_ASM",
   "-DSHA256_ASM",
@@ -524,6 +554,9 @@ crypto_config_linux_x86_64_cflags = [
   "-DWHIRLPOOL_ASM",
   "-DX25519_ASM",
 ]
+if (build_with_liblegacy) {
+  crypto_config_linux_x86_64_cflags += [ "-DPADLOCK_ASM" ]
+}
 
 # 升级修改适配检查点16 内部不同平台编译选项列表
 crypto_config_mingw64_cflags = [
@@ -545,7 +578,6 @@ crypto_config_mingw64_cflags = [
   "-DOPENSSL_BN_ASM_GF2m",
   "-DOPENSSL_BN_ASM_MONT",
   "-DOPENSSL_BN_ASM_MONT5",
-  "-DPADLOCK_ASM",
   "-DPOLY1305_ASM",
   "-DSHA1_ASM",
   "-DSHA256_ASM",
@@ -554,6 +586,9 @@ crypto_config_mingw64_cflags = [
   "-DWHIRLPOOL_ASM",
   "-DX25519_ASM",
 ]
+if (build_with_liblegacy) {
+  crypto_config_mingw64_cflags += [ "-DPADLOCK_ASM" ]
+}
 
 crypto_config_current_platform_cflags = []
 if (openssl_selected_platform == "linux-armv4") {
@@ -749,30 +784,32 @@ libdefault_common_sources = [
 ]
 
 # 升级修改适配检查点19 liblegacy 源码列表
-liblegacy_sources = [
-  "providers/implementations/ciphers/cipher_blowfish.c",
-  "providers/implementations/ciphers/cipher_blowfish_hw.c",
-  "providers/implementations/ciphers/cipher_cast5.c",
-  "providers/implementations/ciphers/cipher_cast5_hw.c",
-  "providers/implementations/ciphers/cipher_des.c",
-  "providers/implementations/ciphers/cipher_des_hw.c",
-  "providers/implementations/ciphers/cipher_desx.c",
-  "providers/implementations/ciphers/cipher_desx_hw.c",
-  "providers/implementations/ciphers/cipher_idea.c",
-  "providers/implementations/ciphers/cipher_idea_hw.c",
-  "providers/implementations/ciphers/cipher_rc2.c",
-  "providers/implementations/ciphers/cipher_rc2_hw.c",
-  "providers/implementations/ciphers/cipher_rc4.c",
-  "providers/implementations/ciphers/cipher_rc4_hmac_md5.c",
-  "providers/implementations/ciphers/cipher_rc4_hmac_md5_hw.c",
-  "providers/implementations/ciphers/cipher_rc4_hw.c",
-  "providers/implementations/ciphers/cipher_seed.c",
-  "providers/implementations/ciphers/cipher_seed_hw.c",
-  "providers/implementations/digests/md4_prov.c",
-  "providers/implementations/digests/mdc2_prov.c",
-  "providers/implementations/digests/wp_prov.c",
-  "providers/implementations/kdfs/pbkdf1.c",
-]
+if (build_with_liblegacy) {
+  liblegacy_sources = [
+    "providers/implementations/ciphers/cipher_blowfish.c",
+    "providers/implementations/ciphers/cipher_blowfish_hw.c",
+    "providers/implementations/ciphers/cipher_cast5.c",
+    "providers/implementations/ciphers/cipher_cast5_hw.c",
+    "providers/implementations/ciphers/cipher_des.c",
+    "providers/implementations/ciphers/cipher_des_hw.c",
+    "providers/implementations/ciphers/cipher_desx.c",
+    "providers/implementations/ciphers/cipher_desx_hw.c",
+    "providers/implementations/ciphers/cipher_idea.c",
+    "providers/implementations/ciphers/cipher_idea_hw.c",
+    "providers/implementations/ciphers/cipher_rc2.c",
+    "providers/implementations/ciphers/cipher_rc2_hw.c",
+    "providers/implementations/ciphers/cipher_rc4.c",
+    "providers/implementations/ciphers/cipher_rc4_hmac_md5.c",
+    "providers/implementations/ciphers/cipher_rc4_hmac_md5_hw.c",
+    "providers/implementations/ciphers/cipher_rc4_hw.c",
+    "providers/implementations/ciphers/cipher_seed.c",
+    "providers/implementations/ciphers/cipher_seed_hw.c",
+    "providers/implementations/digests/md4_prov.c",
+    "providers/implementations/digests/mdc2_prov.c",
+    "providers/implementations/digests/wp_prov.c",
+    "providers/implementations/kdfs/pbkdf1.c",
+  ]
+}
 
 ohos_source_set("crypto_source") {
   if (!compatible_with_legacy_build_system) {
@@ -1505,20 +1542,26 @@ ohos_source_set("crypto_source") {
     "crypto/x509/x_req.c",
     "crypto/x509/x_x509.c",
     "crypto/x509/x_x509a.c",
-    "engines/e_capi.c",
-    "engines/e_padlock.c",
     "providers/baseprov.c",
     "providers/defltprov.c",
-    "providers/legacyprov.c",
     "providers/nullprov.c",
     "providers/prov_running.c",
   ]
+  if (build_with_liblegacy) {
+    sources += [
+      "engines/e_capi.c",
+      "engines/e_padlock.c",
+      "providers/legacyprov.c",
+    ]
+  }
   sources += libcommon_common_sources
   sources += libcommon_build_all_generated_selected_platform_sources
   sources += libdefault_common_sources
   sources += libdefault_build_all_generated_selected_platform_sources
   sources += libcrypto_build_all_generated_selected_platform_sources
-  sources += liblegacy_sources
+  if (build_with_liblegacy) {
+    sources += liblegacy_sources
+  }
 
   if (openssl_selected_platform == "linux-armv4") {
     # 升级修改适配检查点21 libcrypto 不同平台c源码列表
@@ -1531,8 +1574,10 @@ ohos_source_set("crypto_source") {
       "crypto/rc4/rc4_enc.c",
       "crypto/rc4/rc4_skey.c",
       "crypto/whrlpool/wp_block.c",
-      "engines/e_afalg.c",
     ]
+    if (build_with_liblegacy) {
+      sources += [ "engines/e_afalg.c" ]
+    }
   } else if (openssl_selected_platform == "linux-aarch64") {
     # 升级修改适配检查点22 libcrypto 不同平台c源码列表
     sources += [
@@ -1545,8 +1590,10 @@ ohos_source_set("crypto_source") {
       "crypto/rc4/rc4_enc.c",
       "crypto/rc4/rc4_skey.c",
       "crypto/whrlpool/wp_block.c",
-      "engines/e_afalg.c",
     ]
+    if (build_with_liblegacy) {
+      sources += [ "engines/e_afalg.c" ]
+    }
   } else if (openssl_selected_platform == "darwin64-x86_64-cc") {
     # 升级修改适配检查点23 libcrypto 不同平台c源码列表
     sources += [
@@ -1573,8 +1620,10 @@ ohos_source_set("crypto_source") {
       "crypto/bn/asm/x86_64-gcc.c",
       "crypto/bn/rsaz_exp.c",
       "crypto/bn/rsaz_exp_x2.c",
-      "engines/e_afalg.c",
     ]
+    if (build_with_liblegacy) {
+      sources += [ "engines/e_afalg.c" ]
+    }
   } else if (openssl_selected_platform == "mingw64") {
     # 升级修改适配检查点26 libcrypto 不同平台c源码列表
     sources += [

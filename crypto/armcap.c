@@ -158,6 +158,10 @@ void OPENSSL_cpuid_setup(void)
         return;
     }
 
+#ifdef __LITEOS_A__
+    return;
+#endif
+
 # if defined(__APPLE__)
 #   if !defined(__aarch64__)
     /*
