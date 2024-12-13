@@ -17,6 +17,7 @@ pwd # out/target_name
 openssl_source_path="$1"
 build_all_generated_path="$2"
 openssl_selected_platform="$3"
+build_with_liblegacy="$4"
 
 # https://github.com/openssl/openssl/blob/master/INSTALL.md#out-of-tree-builds
 # OpenSSL can be configured to build in a build directory separate from the source code directory.
@@ -41,7 +42,13 @@ pushd ${build_all_generated_path}/${openssl_selected_platform}
     # no-shared affects the building of libcrypto*.dll and libssl*.dll,
     # not dynamically loadable modules (which are governed by the configuration option no-module / enable-module,
     # which is enabled by default).
-    configure_cmd="${openssl_source_path}/Configure ${openssl_selected_platform} no-shared no-module no-filenames"
+    if [ "$build_with_liblegacy" = "false" ]; then
+        echo "openssl disable liblegacy"
+        configure_cmd="${openssl_source_path}/Configure ${openssl_selected_platform} no-filenames"
+    else
+        echo "openssl enable liblegacy"
+        configure_cmd="${openssl_source_path}/Configure ${openssl_selected_platform} no-shared no-module no-filenames"
+    fi
     echo $configure_cmd
     $configure_cmd
     make build_all_generated -j256 >/dev/null 2>&1
