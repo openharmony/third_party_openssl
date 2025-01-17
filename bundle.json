@@ -45,9 +45,6 @@
                 },
                 {
                     "name" : "//third_party/openssl:libssl_static"
-                },
-                {
-                    "name" : "//third_party/openssl:ssl_source"
                 }
             ],
             "test": []
