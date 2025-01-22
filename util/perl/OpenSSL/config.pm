@@ -675,6 +675,8 @@ EOF
                                     defines => [ 'B_ENDIAN' ] } ],
       [ 'sh.*-.*-linux2',         { target => "linux-generic32",
                                     defines => [ 'L_ENDIAN' ] } ],
+      [ 'loongarch64-.*-linux2',  { target => "linux64-loongarch64",
+                                    defines => [ 'L_ENDIAN' ] } ],
       [ 'm68k.*-.*-linux2',       { target => "linux-generic32",
                                     defines => [ 'B_ENDIAN' ] } ],
       [ 's390-.*-linux2',         { target => "linux-generic32",

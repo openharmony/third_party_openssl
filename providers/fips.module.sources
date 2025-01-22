@@ -227,6 +227,8 @@ crypto/ia64cpuid.S
 crypto/initthread.c
 crypto/lhash/lhash.c
 crypto/lhash/lhash_local.h
+crypto/loongarch64cpuid.pl
+crypto/loongarchcap.c
 crypto/mem_clr.c
 crypto/modes/asm/aes-gcm-armv8_64.pl
 crypto/modes/asm/aesni-gcm-x86_64.pl
