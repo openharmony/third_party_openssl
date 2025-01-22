@@ -89,183 +89,182 @@ if (current_cpu == "arm" && !(current_os == "linux" || host_os == "mac")) {
 print(
     "openssl detecting os done. openssl_selected_platform = ${openssl_selected_platform}")
 
-openssl_selected_platform_full_path =
-    "${target_out_dir}/build_all_generated/${openssl_selected_platform}"
+build_all_generated_path = "${target_out_dir}/build_all_generated"
 
 # 升级修改适配检查点1 libcrypto 不同平台汇编代码
 libcrypto_build_all_generated_linux_armv4_sources = [
-  "${openssl_selected_platform_full_path}/crypto/aes/aes-armv4.S",
-  "${openssl_selected_platform_full_path}/crypto/aes/aesv8-armx.S",
-  "${openssl_selected_platform_full_path}/crypto/aes/bsaes-armv7.S",
-  "${openssl_selected_platform_full_path}/crypto/armv4cpuid.S",
-  "${openssl_selected_platform_full_path}/crypto/bn/armv4-gf2m.S",
-  "${openssl_selected_platform_full_path}/crypto/bn/armv4-mont.S",
-  "${openssl_selected_platform_full_path}/crypto/chacha/chacha-armv4.S",
-  "${openssl_selected_platform_full_path}/crypto/ec/ecp_nistz256-armv4.S",
-  "${openssl_selected_platform_full_path}/crypto/modes/ghash-armv4.S",
-  "${openssl_selected_platform_full_path}/crypto/modes/ghashv8-armx.S",
-  "${openssl_selected_platform_full_path}/crypto/poly1305/poly1305-armv4.S",
-  "${openssl_selected_platform_full_path}/crypto/sha/keccak1600-armv4.S",
-  "${openssl_selected_platform_full_path}/crypto/sha/sha1-armv4-large.S",
-  "${openssl_selected_platform_full_path}/crypto/sha/sha256-armv4.S",
-  "${openssl_selected_platform_full_path}/crypto/sha/sha512-armv4.S",
+  "${build_all_generated_path}/crypto/aes/aes-armv4.S",
+  "${build_all_generated_path}/crypto/aes/aesv8-armx.S",
+  "${build_all_generated_path}/crypto/aes/bsaes-armv7.S",
+  "${build_all_generated_path}/crypto/armv4cpuid.S",
+  "${build_all_generated_path}/crypto/bn/armv4-gf2m.S",
+  "${build_all_generated_path}/crypto/bn/armv4-mont.S",
+  "${build_all_generated_path}/crypto/chacha/chacha-armv4.S",
+  "${build_all_generated_path}/crypto/ec/ecp_nistz256-armv4.S",
+  "${build_all_generated_path}/crypto/modes/ghash-armv4.S",
+  "${build_all_generated_path}/crypto/modes/ghashv8-armx.S",
+  "${build_all_generated_path}/crypto/poly1305/poly1305-armv4.S",
+  "${build_all_generated_path}/crypto/sha/keccak1600-armv4.S",
+  "${build_all_generated_path}/crypto/sha/sha1-armv4-large.S",
+  "${build_all_generated_path}/crypto/sha/sha256-armv4.S",
+  "${build_all_generated_path}/crypto/sha/sha512-armv4.S",
 ]
 
 # 升级修改适配检查点2 libcrypto 不同平台汇编代码
 libcrypto_build_all_generated_linux_aarch64_sources = [
-  "${openssl_selected_platform_full_path}/crypto/aes/aesv8-armx.S",
-  "${openssl_selected_platform_full_path}/crypto/aes/vpaes-armv8.S",
-  "${openssl_selected_platform_full_path}/crypto/arm64cpuid.S",
-  "${openssl_selected_platform_full_path}/crypto/bn/armv8-mont.S",
-  "${openssl_selected_platform_full_path}/crypto/chacha/chacha-armv8.S",
-  "${openssl_selected_platform_full_path}/crypto/ec/ecp_nistz256-armv8.S",
-  "${openssl_selected_platform_full_path}/crypto/modes/aes-gcm-armv8_64.S",
-  "${openssl_selected_platform_full_path}/crypto/modes/ghashv8-armx.S",
-  "${openssl_selected_platform_full_path}/crypto/poly1305/poly1305-armv8.S",
-  "${openssl_selected_platform_full_path}/crypto/sha/keccak1600-armv8.S",
-  "${openssl_selected_platform_full_path}/crypto/sha/sha1-armv8.S",
-  "${openssl_selected_platform_full_path}/crypto/sha/sha256-armv8.S",
-  "${openssl_selected_platform_full_path}/crypto/sha/sha512-armv8.S",
+  "${build_all_generated_path}/crypto/aes/aesv8-armx.S",
+  "${build_all_generated_path}/crypto/aes/vpaes-armv8.S",
+  "${build_all_generated_path}/crypto/arm64cpuid.S",
+  "${build_all_generated_path}/crypto/bn/armv8-mont.S",
+  "${build_all_generated_path}/crypto/chacha/chacha-armv8.S",
+  "${build_all_generated_path}/crypto/ec/ecp_nistz256-armv8.S",
+  "${build_all_generated_path}/crypto/modes/aes-gcm-armv8_64.S",
+  "${build_all_generated_path}/crypto/modes/ghashv8-armx.S",
+  "${build_all_generated_path}/crypto/poly1305/poly1305-armv8.S",
+  "${build_all_generated_path}/crypto/sha/keccak1600-armv8.S",
+  "${build_all_generated_path}/crypto/sha/sha1-armv8.S",
+  "${build_all_generated_path}/crypto/sha/sha256-armv8.S",
+  "${build_all_generated_path}/crypto/sha/sha512-armv8.S",
 ]
 
 # 升级修改适配检查点3 libcrypto 不同平台汇编代码
 libcrypto_build_all_generated_darwin64_x86_64_cc_sources = [
-  "${openssl_selected_platform_full_path}/crypto/aes/aes-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/aes/aesni-mb-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/aes/aesni-sha1-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/aes/aesni-sha256-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/aes/aesni-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/aes/bsaes-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/aes/vpaes-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/bn/rsaz-avx2.s",
-  "${openssl_selected_platform_full_path}/crypto/bn/rsaz-avx512.s",
-  "${openssl_selected_platform_full_path}/crypto/bn/rsaz-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/bn/x86_64-gf2m.s",
-  "${openssl_selected_platform_full_path}/crypto/bn/x86_64-mont.s",
-  "${openssl_selected_platform_full_path}/crypto/bn/x86_64-mont5.s",
-  "${openssl_selected_platform_full_path}/crypto/camellia/cmll-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/chacha/chacha-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/ec/ecp_nistz256-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/ec/x25519-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/md5/md5-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/modes/aesni-gcm-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/modes/ghash-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/poly1305/poly1305-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/rc4/rc4-md5-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/rc4/rc4-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/sha/keccak1600-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/sha/sha1-mb-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/sha/sha1-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/sha/sha256-mb-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/sha/sha256-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/sha/sha512-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/whrlpool/wp-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/x86_64cpuid.s",
+  "${build_all_generated_path}/crypto/aes/aes-x86_64.s",
+  "${build_all_generated_path}/crypto/aes/aesni-mb-x86_64.s",
+  "${build_all_generated_path}/crypto/aes/aesni-sha1-x86_64.s",
+  "${build_all_generated_path}/crypto/aes/aesni-sha256-x86_64.s",
+  "${build_all_generated_path}/crypto/aes/aesni-x86_64.s",
+  "${build_all_generated_path}/crypto/aes/bsaes-x86_64.s",
+  "${build_all_generated_path}/crypto/aes/vpaes-x86_64.s",
+  "${build_all_generated_path}/crypto/bn/rsaz-avx2.s",
+  "${build_all_generated_path}/crypto/bn/rsaz-avx512.s",
+  "${build_all_generated_path}/crypto/bn/rsaz-x86_64.s",
+  "${build_all_generated_path}/crypto/bn/x86_64-gf2m.s",
+  "${build_all_generated_path}/crypto/bn/x86_64-mont.s",
+  "${build_all_generated_path}/crypto/bn/x86_64-mont5.s",
+  "${build_all_generated_path}/crypto/camellia/cmll-x86_64.s",
+  "${build_all_generated_path}/crypto/chacha/chacha-x86_64.s",
+  "${build_all_generated_path}/crypto/ec/ecp_nistz256-x86_64.s",
+  "${build_all_generated_path}/crypto/ec/x25519-x86_64.s",
+  "${build_all_generated_path}/crypto/md5/md5-x86_64.s",
+  "${build_all_generated_path}/crypto/modes/aesni-gcm-x86_64.s",
+  "${build_all_generated_path}/crypto/modes/ghash-x86_64.s",
+  "${build_all_generated_path}/crypto/poly1305/poly1305-x86_64.s",
+  "${build_all_generated_path}/crypto/rc4/rc4-md5-x86_64.s",
+  "${build_all_generated_path}/crypto/rc4/rc4-x86_64.s",
+  "${build_all_generated_path}/crypto/sha/keccak1600-x86_64.s",
+  "${build_all_generated_path}/crypto/sha/sha1-mb-x86_64.s",
+  "${build_all_generated_path}/crypto/sha/sha1-x86_64.s",
+  "${build_all_generated_path}/crypto/sha/sha256-mb-x86_64.s",
+  "${build_all_generated_path}/crypto/sha/sha256-x86_64.s",
+  "${build_all_generated_path}/crypto/sha/sha512-x86_64.s",
+  "${build_all_generated_path}/crypto/whrlpool/wp-x86_64.s",
+  "${build_all_generated_path}/crypto/x86_64cpuid.s",
 ]
 if (build_with_liblegacy) {
   libcrypto_build_all_generated_darwin64_x86_64_cc_sources +=
-      [ "${openssl_selected_platform_full_path}/engines/e_padlock-x86_64.s" ]
+      [ "${build_all_generated_path}/engines/e_padlock-x86_64.s" ]
 }
 
 # 升级修改适配检查点4 libcrypto 不同平台汇编代码
 libcrypto_build_all_generated_darwin64_arm64_cc_sources = [
-  "${openssl_selected_platform_full_path}/crypto/aes/aesv8-armx.S",
-  "${openssl_selected_platform_full_path}/crypto/aes/vpaes-armv8.S",
-  "${openssl_selected_platform_full_path}/crypto/arm64cpuid.S",
-  "${openssl_selected_platform_full_path}/crypto/bn/armv8-mont.S",
-  "${openssl_selected_platform_full_path}/crypto/chacha/chacha-armv8.S",
-  "${openssl_selected_platform_full_path}/crypto/ec/ecp_nistz256-armv8.S",
-  "${openssl_selected_platform_full_path}/crypto/modes/aes-gcm-armv8_64.S",
-  "${openssl_selected_platform_full_path}/crypto/modes/ghashv8-armx.S",
-  "${openssl_selected_platform_full_path}/crypto/poly1305/poly1305-armv8.S",
-  "${openssl_selected_platform_full_path}/crypto/sha/keccak1600-armv8.S",
-  "${openssl_selected_platform_full_path}/crypto/sha/sha1-armv8.S",
-  "${openssl_selected_platform_full_path}/crypto/sha/sha256-armv8.S",
-  "${openssl_selected_platform_full_path}/crypto/sha/sha512-armv8.S",
+  "${build_all_generated_path}/crypto/aes/aesv8-armx.S",
+  "${build_all_generated_path}/crypto/aes/vpaes-armv8.S",
+  "${build_all_generated_path}/crypto/arm64cpuid.S",
+  "${build_all_generated_path}/crypto/bn/armv8-mont.S",
+  "${build_all_generated_path}/crypto/chacha/chacha-armv8.S",
+  "${build_all_generated_path}/crypto/ec/ecp_nistz256-armv8.S",
+  "${build_all_generated_path}/crypto/modes/aes-gcm-armv8_64.S",
+  "${build_all_generated_path}/crypto/modes/ghashv8-armx.S",
+  "${build_all_generated_path}/crypto/poly1305/poly1305-armv8.S",
+  "${build_all_generated_path}/crypto/sha/keccak1600-armv8.S",
+  "${build_all_generated_path}/crypto/sha/sha1-armv8.S",
+  "${build_all_generated_path}/crypto/sha/sha256-armv8.S",
+  "${build_all_generated_path}/crypto/sha/sha512-armv8.S",
 ]
 
 # 升级修改适配检查点5 libcrypto 不同平台汇编代码
 libcrypto_build_all_generated_linux_x86_64_sources = [
-  "${openssl_selected_platform_full_path}/crypto/aes/aes-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/aes/aesni-mb-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/aes/aesni-sha1-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/aes/aesni-sha256-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/aes/aesni-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/aes/bsaes-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/aes/vpaes-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/bn/rsaz-avx2.s",
-  "${openssl_selected_platform_full_path}/crypto/bn/rsaz-avx512.s",
-  "${openssl_selected_platform_full_path}/crypto/bn/rsaz-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/bn/x86_64-gf2m.s",
-  "${openssl_selected_platform_full_path}/crypto/bn/x86_64-mont.s",
-  "${openssl_selected_platform_full_path}/crypto/bn/x86_64-mont5.s",
-  "${openssl_selected_platform_full_path}/crypto/camellia/cmll-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/chacha/chacha-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/ec/ecp_nistz256-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/ec/x25519-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/md5/md5-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/modes/aesni-gcm-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/modes/ghash-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/poly1305/poly1305-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/rc4/rc4-md5-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/rc4/rc4-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/sha/keccak1600-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/sha/sha1-mb-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/sha/sha1-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/sha/sha256-mb-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/sha/sha256-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/sha/sha512-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/whrlpool/wp-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/x86_64cpuid.s",
+  "${build_all_generated_path}/crypto/aes/aes-x86_64.s",
+  "${build_all_generated_path}/crypto/aes/aesni-mb-x86_64.s",
+  "${build_all_generated_path}/crypto/aes/aesni-sha1-x86_64.s",
+  "${build_all_generated_path}/crypto/aes/aesni-sha256-x86_64.s",
+  "${build_all_generated_path}/crypto/aes/aesni-x86_64.s",
+  "${build_all_generated_path}/crypto/aes/bsaes-x86_64.s",
+  "${build_all_generated_path}/crypto/aes/vpaes-x86_64.s",
+  "${build_all_generated_path}/crypto/bn/rsaz-avx2.s",
+  "${build_all_generated_path}/crypto/bn/rsaz-avx512.s",
+  "${build_all_generated_path}/crypto/bn/rsaz-x86_64.s",
+  "${build_all_generated_path}/crypto/bn/x86_64-gf2m.s",
+  "${build_all_generated_path}/crypto/bn/x86_64-mont.s",
+  "${build_all_generated_path}/crypto/bn/x86_64-mont5.s",
+  "${build_all_generated_path}/crypto/camellia/cmll-x86_64.s",
+  "${build_all_generated_path}/crypto/chacha/chacha-x86_64.s",
+  "${build_all_generated_path}/crypto/ec/ecp_nistz256-x86_64.s",
+  "${build_all_generated_path}/crypto/ec/x25519-x86_64.s",
+  "${build_all_generated_path}/crypto/md5/md5-x86_64.s",
+  "${build_all_generated_path}/crypto/modes/aesni-gcm-x86_64.s",
+  "${build_all_generated_path}/crypto/modes/ghash-x86_64.s",
+  "${build_all_generated_path}/crypto/poly1305/poly1305-x86_64.s",
+  "${build_all_generated_path}/crypto/rc4/rc4-md5-x86_64.s",
+  "${build_all_generated_path}/crypto/rc4/rc4-x86_64.s",
+  "${build_all_generated_path}/crypto/sha/keccak1600-x86_64.s",
+  "${build_all_generated_path}/crypto/sha/sha1-mb-x86_64.s",
+  "${build_all_generated_path}/crypto/sha/sha1-x86_64.s",
+  "${build_all_generated_path}/crypto/sha/sha256-mb-x86_64.s",
+  "${build_all_generated_path}/crypto/sha/sha256-x86_64.s",
+  "${build_all_generated_path}/crypto/sha/sha512-x86_64.s",
+  "${build_all_generated_path}/crypto/whrlpool/wp-x86_64.s",
+  "${build_all_generated_path}/crypto/x86_64cpuid.s",
 ]
 if (build_with_liblegacy) {
   libcrypto_build_all_generated_linux_x86_64_sources +=
-      [ "${openssl_selected_platform_full_path}/engines/e_padlock-x86_64.s" ]
+      [ "${build_all_generated_path}/engines/e_padlock-x86_64.s" ]
 }
 
 # 升级修改适配检查点2 libcrypto 不同平台汇编代码
 libcrypto_build_all_generated_linux_loongarch64_sources = [
-  "${openssl_selected_platform_full_path}/crypto/loongarch64cpuid.s",
-  "${openssl_selected_platform_full_path}/crypto/md5/md5-loongarch64.S",
+  "${build_all_generated_path}/crypto/loongarch64cpuid.s",
+  "${build_all_generated_path}/crypto/md5/md5-loongarch64.S",
 ]
 
 # 升级修改适配检查点6 libcrypto 不同平台汇编代码
 libcrypto_build_all_generated_mingw64_sources = [
-  "${openssl_selected_platform_full_path}/crypto/aes/aes-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/aes/aesni-mb-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/aes/aesni-sha1-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/aes/aesni-sha256-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/aes/aesni-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/aes/bsaes-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/aes/vpaes-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/bn/rsaz-avx2.s",
-  "${openssl_selected_platform_full_path}/crypto/bn/rsaz-avx512.s",
-  "${openssl_selected_platform_full_path}/crypto/bn/rsaz-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/bn/x86_64-gf2m.s",
-  "${openssl_selected_platform_full_path}/crypto/bn/x86_64-mont.s",
-  "${openssl_selected_platform_full_path}/crypto/bn/x86_64-mont5.s",
-  "${openssl_selected_platform_full_path}/crypto/camellia/cmll-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/chacha/chacha-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/ec/ecp_nistz256-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/ec/x25519-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/md5/md5-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/modes/aesni-gcm-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/modes/ghash-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/poly1305/poly1305-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/rc4/rc4-md5-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/rc4/rc4-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/sha/keccak1600-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/sha/sha1-mb-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/sha/sha1-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/sha/sha256-mb-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/sha/sha256-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/sha/sha512-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/whrlpool/wp-x86_64.s",
-  "${openssl_selected_platform_full_path}/crypto/x86_64cpuid.s",
+  "${build_all_generated_path}/crypto/aes/aes-x86_64.s",
+  "${build_all_generated_path}/crypto/aes/aesni-mb-x86_64.s",
+  "${build_all_generated_path}/crypto/aes/aesni-sha1-x86_64.s",
+  "${build_all_generated_path}/crypto/aes/aesni-sha256-x86_64.s",
+  "${build_all_generated_path}/crypto/aes/aesni-x86_64.s",
+  "${build_all_generated_path}/crypto/aes/bsaes-x86_64.s",
+  "${build_all_generated_path}/crypto/aes/vpaes-x86_64.s",
+  "${build_all_generated_path}/crypto/bn/rsaz-avx2.s",
+  "${build_all_generated_path}/crypto/bn/rsaz-avx512.s",
+  "${build_all_generated_path}/crypto/bn/rsaz-x86_64.s",
+  "${build_all_generated_path}/crypto/bn/x86_64-gf2m.s",
+  "${build_all_generated_path}/crypto/bn/x86_64-mont.s",
+  "${build_all_generated_path}/crypto/bn/x86_64-mont5.s",
+  "${build_all_generated_path}/crypto/camellia/cmll-x86_64.s",
+  "${build_all_generated_path}/crypto/chacha/chacha-x86_64.s",
+  "${build_all_generated_path}/crypto/ec/ecp_nistz256-x86_64.s",
+  "${build_all_generated_path}/crypto/ec/x25519-x86_64.s",
+  "${build_all_generated_path}/crypto/md5/md5-x86_64.s",
+  "${build_all_generated_path}/crypto/modes/aesni-gcm-x86_64.s",
+  "${build_all_generated_path}/crypto/modes/ghash-x86_64.s",
+  "${build_all_generated_path}/crypto/poly1305/poly1305-x86_64.s",
+  "${build_all_generated_path}/crypto/rc4/rc4-md5-x86_64.s",
+  "${build_all_generated_path}/crypto/rc4/rc4-x86_64.s",
+  "${build_all_generated_path}/crypto/sha/keccak1600-x86_64.s",
+  "${build_all_generated_path}/crypto/sha/sha1-mb-x86_64.s",
+  "${build_all_generated_path}/crypto/sha/sha1-x86_64.s",
+  "${build_all_generated_path}/crypto/sha/sha256-mb-x86_64.s",
+  "${build_all_generated_path}/crypto/sha/sha256-x86_64.s",
+  "${build_all_generated_path}/crypto/sha/sha512-x86_64.s",
+  "${build_all_generated_path}/crypto/whrlpool/wp-x86_64.s",
+  "${build_all_generated_path}/crypto/x86_64cpuid.s",
 ]
 if (build_with_liblegacy) {
   libcrypto_build_all_generated_mingw64_sources +=
-      [ "${openssl_selected_platform_full_path}/engines/e_padlock-x86_64.s" ]
+      [ "${build_all_generated_path}/engines/e_padlock-x86_64.s" ]
 }
 
 libcrypto_build_all_generated_selected_platform_sources = []
@@ -294,18 +293,17 @@ if (openssl_selected_platform == "linux-armv4") {
 
 # 升级修改适配检查点7 libcommon 生成的源码列表
 libcommon_build_all_generated_selected_platform_sources = [
-  "${openssl_selected_platform_full_path}/providers/common/der/der_digests_gen.c",
-  "${openssl_selected_platform_full_path}/providers/common/der/der_dsa_gen.c",
-  "${openssl_selected_platform_full_path}/providers/common/der/der_ec_gen.c",
-  "${openssl_selected_platform_full_path}/providers/common/der/der_ecx_gen.c",
-  "${openssl_selected_platform_full_path}/providers/common/der/der_rsa_gen.c",
-  "${openssl_selected_platform_full_path}/providers/common/der/der_wrap_gen.c",
+  "${build_all_generated_path}/providers/common/der/der_digests_gen.c",
+  "${build_all_generated_path}/providers/common/der/der_dsa_gen.c",
+  "${build_all_generated_path}/providers/common/der/der_ec_gen.c",
+  "${build_all_generated_path}/providers/common/der/der_ecx_gen.c",
+  "${build_all_generated_path}/providers/common/der/der_rsa_gen.c",
+  "${build_all_generated_path}/providers/common/der/der_wrap_gen.c",
 ]
 
 # 升级修改适配检查点8 libdefault 生成的源码列表
-libdefault_build_all_generated_selected_platform_sources = [
-  "${openssl_selected_platform_full_path}/providers/common/der/der_sm2_gen.c",
-]
+libdefault_build_all_generated_selected_platform_sources =
+    [ "${build_all_generated_path}/providers/common/der/der_sm2_gen.c" ]
 
 # We make use of both exec_script and action to build openssl build_all_generated items.
 #
@@ -328,7 +326,7 @@ print(exec_script(
             rebase_path(
                 "//third_party/openssl/make_openssl_build_all_generated.sh"),
             rebase_path("//third_party/openssl"),
-            rebase_path("${target_out_dir}/build_all_generated"),
+            rebase_path("${build_all_generated_path}"),
             openssl_selected_platform,
             "${build_with_liblegacy}",
           ],
@@ -340,9 +338,9 @@ action("openssl_build_all_generated") {
   outputs += libcommon_build_all_generated_selected_platform_sources
   outputs += libdefault_build_all_generated_selected_platform_sources
   outputs += libcrypto_build_all_generated_selected_platform_sources
-  outputs += [ "${openssl_selected_platform_full_path}/apps/progs.c" ]
+  outputs += [ "${build_all_generated_path}/apps/progs.c" ]
   if (openssl_selected_platform == "mingw64") {
-    outputs += [ "${openssl_selected_platform_full_path}/apps/openssl.rc" ]
+    outputs += [ "${build_all_generated_path}/apps/openssl.rc" ]
   }
 }
 
@@ -408,17 +406,17 @@ crypto_config_common_private_include_dirs = [
   "crypto/rsa",
   "providers/common/include/prov",
 
-  "${openssl_selected_platform_full_path}/apps",
-  "${openssl_selected_platform_full_path}/crypto",
-  "${openssl_selected_platform_full_path}/include",
-  "${openssl_selected_platform_full_path}/include/crypto",
-  "${openssl_selected_platform_full_path}/include/openssl",
-  "${openssl_selected_platform_full_path}/providers/common/include",
-  "${openssl_selected_platform_full_path}/providers/common/include/prov",
+  "${build_all_generated_path}/apps",
+  "${build_all_generated_path}/crypto",
+  "${build_all_generated_path}/include",
+  "${build_all_generated_path}/include/crypto",
+  "${build_all_generated_path}/include/openssl",
+  "${build_all_generated_path}/providers/common/include",
+  "${build_all_generated_path}/providers/common/include/prov",
 ]
 crypto_config_common_public_include_dirs = [
   "include",
-  "${openssl_selected_platform_full_path}/include",
+  "${build_all_generated_path}/include",
 ]
 
 # located at /system/etc/
@@ -1972,7 +1970,7 @@ ohos_static_library("libapps") {
 ohos_executable("openssl") {
   # 升级修改适配检查点29 apps/openssl 源码列表
   sources = [
-    "${openssl_selected_platform_full_path}/apps/progs.c",
+    "${build_all_generated_path}/apps/progs.c",
     "apps/asn1parse.c",
     "apps/ca.c",
     "apps/ciphers.c",
@@ -2029,7 +2027,7 @@ ohos_executable("openssl") {
     "apps/x509.c",
   ]
   if (openssl_selected_platform == "mingw64") {
-    sources += [ "${openssl_selected_platform_full_path}/apps/openssl.rc" ]
+    sources += [ "${build_all_generated_path}/apps/openssl.rc" ]
   }
   deps = [
     ":libapps",

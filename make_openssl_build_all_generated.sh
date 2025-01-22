@@ -22,9 +22,9 @@ build_with_liblegacy="$4"
 # https://github.com/openssl/openssl/blob/master/INSTALL.md#out-of-tree-builds
 # OpenSSL can be configured to build in a build directory separate from the source code directory.
 # It's done by placing yourself in some other directory and invoking the configuration commands from there.
-rm -rf ${build_all_generated_path}/${openssl_selected_platform}
-mkdir -p ${build_all_generated_path}/${openssl_selected_platform}
-pushd ${build_all_generated_path}/${openssl_selected_platform}
+rm -rf ${build_all_generated_path}
+mkdir -p ${build_all_generated_path}
+pushd ${build_all_generated_path}
     # https://github.com/openssl/openssl/issues/20112#issuecomment-1400388204
     # no-shared will disable building shared libcrypto and libssl libraries.
     # But the legacy provider would still be built as a shared module.
