@@ -305,15 +305,35 @@ libcommon_build_all_generated_selected_platform_sources = [
 libdefault_build_all_generated_selected_platform_sources =
     [ "${build_all_generated_path}/providers/common/der/der_sm2_gen.c" ]
 
+# We make use of both exec_script and action to build openssl build_all_generated items.
+#
+# Some modules use openssl in an incorrect way, leading to the confusing building sequences,
+# so the user modules building fail because openssl headers have not been generated at the building time.
+# The exec_script in the global area will be executed before ninja command,
+# and it ensures that the headers is generated properly before the building of any modules.
+#
+# Openssl generate some assembly codes before it is building.
+# The sources list in BUILD.gn include the assembly codes.
+# The gn build system requires that all items in sources list should be the output of another build item.
+# So we use an empty action to generate the assembly codes.
+# Actually we generate the assembly codes in exec_script, not in action.
+#
+# The gn build system requires the script in exec_script and action should be python script,
+# so we invoke the shell script in python script
+print(exec_script(
+          rebase_path("//third_party/openssl/run_command.py"),
+          [
+            rebase_path(
+                "//third_party/openssl/make_openssl_build_all_generated.sh"),
+            rebase_path("//third_party/openssl"),
+            rebase_path("${build_all_generated_path}"),
+            openssl_selected_platform,
+            "${build_with_liblegacy}",
+          ],
+          "string",
+          []))
 action("openssl_build_all_generated") {
-  script = rebase_path("//third_party/openssl/run_command.py")
-  args = [
-    rebase_path("//third_party/openssl/make_openssl_build_all_generated.sh"),
-    rebase_path("//third_party/openssl"),
-    rebase_path("${build_all_generated_path}"),
-    openssl_selected_platform,
-    "${build_with_liblegacy}",
-  ]
+  script = rebase_path("//third_party/openssl/empty.py")
   outputs = []
   outputs += libcommon_build_all_generated_selected_platform_sources
   outputs += libdefault_build_all_generated_selected_platform_sources
@@ -1945,7 +1965,6 @@ ohos_static_library("libapps") {
     part_name = "openssl"
   }
   configs = [ ":crypto_config_private" ]
-  deps = [ ":openssl_build_all_generated" ]
 }
 
 ohos_executable("openssl") {
