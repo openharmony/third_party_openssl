@@ -1714,6 +1714,12 @@ if (is_mingw || is_mac) {
   }
 }
 
+config("openssl_link_config") {
+  if (current_os == "ohos" && current_cpu == "arm64") {
+    ldflags = [ "-Wl,--lto-O0" ]
+  }
+}
+
 ohos_shared_library("libcrypto_shared") {
   sources = []
   configs = []
@@ -1733,6 +1739,7 @@ ohos_shared_library("libcrypto_shared") {
     ]
     output_name = "crypto_openssl"
   } else {
+    configs += [ ":openssl_link_config" ]
     output_name = "libcrypto_openssl"
   }
   if (compatible_with_legacy_build_system) {
@@ -1879,6 +1886,7 @@ ohos_shared_library("libssl_shared") {
     ]
     output_name = "ssl_openssl"
   } else {
+    configs = [ ":openssl_link_config" ]
     output_name = "libssl_openssl"
   }
   if (compatible_with_legacy_build_system) {
