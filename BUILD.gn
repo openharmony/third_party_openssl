@@ -1712,6 +1712,9 @@ if (is_mingw || is_mac) {
       "updater",
     ]
   }
+} else {
+  group("libcrypto_restool") {
+  }
 }
 
 config("openssl_link_config") {
