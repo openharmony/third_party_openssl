@@ -1755,7 +1755,7 @@ ohos_shared_library("libcrypto_shared") {
   if (!compatible_with_legacy_build_system) {
     innerapi_tags = [
       "platformsdk",
-      "chipsetsdk",
+      "chipsetsdk_sp",
     ]
   }
   public_configs = [ ":crypto_config_public" ]
