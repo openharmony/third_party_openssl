@@ -47,7 +47,7 @@ pushd ${build_all_generated_path}
         configure_cmd="${openssl_source_path}/Configure ${openssl_selected_platform} no-filenames"
     else
         echo "openssl enable liblegacy"
-        configure_cmd="${openssl_source_path}/Configure ${openssl_selected_platform} no-shared no-module no-filenames"
+        configure_cmd="${openssl_source_path}/Configure ${openssl_selected_platform} no-shared no-module no-filenames enable-weak-ssl-ciphers"
     fi
     echo $configure_cmd
     $configure_cmd
