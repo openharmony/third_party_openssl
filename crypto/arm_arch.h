@@ -127,3 +127,5 @@ extern unsigned int OPENSSL_armv8_rsa_neonized;
 # define MIDR_IS_CPU_MODEL(midr, imp, partnum) \
            (((midr) & MIDR_CPU_MODEL_MASK) == MIDR_CPU_MODEL(imp, partnum))
 #endif
+
+# define AARCH64_VALID_CALL_TARGET
