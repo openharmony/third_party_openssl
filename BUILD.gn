@@ -37,6 +37,7 @@ declare_args() {
     build_with_liblegacy = true
   }
   openssl_enabled = true
+  openssl_feature_support_usr_symlink =false
 }
 
 if (!compatible_with_legacy_build_system) {
@@ -2030,6 +2031,11 @@ ohos_executable("openssl") {
     ":openssl.cnf",
     ":openssl_build_all_generated",
   ]
+  if (openssl_feature_support_usr_symlink) {
+    symlink_target_name = [
+      "../usr/bin/openssl",
+    ]
+  }
   if (compatible_with_legacy_build_system) {
     subsystem_name = "security"
     part_name = "huks"
