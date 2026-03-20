@@ -44,10 +44,10 @@ pushd ${build_all_generated_path}
     # which is enabled by default).
     if [ "$build_with_liblegacy" = "false" ]; then
         echo "openssl disable liblegacy"
-        configure_cmd="${openssl_source_path}/Configure ${openssl_selected_platform} no-filenames"
+        configure_cmd="${openssl_source_path}/Configure ${openssl_selected_platform} no-filenames enable-md2"
     else
         echo "openssl enable liblegacy"
-        configure_cmd="${openssl_source_path}/Configure ${openssl_selected_platform} no-shared no-module no-filenames enable-weak-ssl-ciphers"
+        configure_cmd="${openssl_source_path}/Configure ${openssl_selected_platform} no-shared no-module no-filenames enable-weak-ssl-ciphers enable-md2"
     fi
     echo $configure_cmd
     $configure_cmd

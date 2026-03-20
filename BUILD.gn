@@ -309,6 +309,7 @@ libdefault_build_all_generated_selected_platform_sources =
 
 action("openssl_build_all_generated") {
   script = rebase_path("//third_party/openssl/run_command.py")
+  inputs = [ "//third_party/openssl/make_openssl_build_all_generated.sh" ]
   args = [
     rebase_path("//third_party/openssl/make_openssl_build_all_generated.sh"),
     rebase_path("//third_party/openssl"),
@@ -821,6 +822,7 @@ if (build_with_liblegacy) {
     "providers/implementations/ciphers/cipher_seed.c",
     "providers/implementations/ciphers/cipher_seed_hw.c",
     "providers/implementations/digests/md4_prov.c",
+    "providers/implementations/digests/md2_prov.c",
     "providers/implementations/digests/mdc2_prov.c",
     "providers/implementations/digests/wp_prov.c",
     "providers/implementations/kdfs/pbkdf1.c",
@@ -1243,6 +1245,7 @@ ohos_source_set("crypto_source") {
     "crypto/evp/keymgmt_meth.c",
     "crypto/evp/legacy_blake2.c",
     "crypto/evp/legacy_md4.c",
+    "crypto/evp/legacy_md2.c",
     "crypto/evp/legacy_md5.c",
     "crypto/evp/legacy_md5_sha1.c",
     "crypto/evp/legacy_mdc2.c",
@@ -1295,6 +1298,8 @@ ohos_source_set("crypto_source") {
     "crypto/lhash/lhash.c",
     "crypto/md4/md4_dgst.c",
     "crypto/md4/md4_one.c",
+    "crypto/md2/md2_dgst.c",
+    "crypto/md2/md2_one.c",
     "crypto/md5/md5_dgst.c",
     "crypto/md5/md5_one.c",
     "crypto/md5/md5_sha1.c",
