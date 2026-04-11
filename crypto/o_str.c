@@ -14,6 +14,7 @@
 #include "crypto/ctype.h"
 #include "internal/cryptlib.h"
 #include "internal/thread_once.h"
+#include "internal/numbers.h"
 
 #define DEFAULT_SEPARATOR ':'
 #define CH_ZERO '\0'
