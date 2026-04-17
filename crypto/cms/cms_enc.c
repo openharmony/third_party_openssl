@@ -22,7 +22,7 @@
 /* Return BIO based on EncryptedContentInfo and key */
 
 BIO *ossl_cms_EncryptedContent_init_bio(CMS_EncryptedContentInfo *ec,
-                                        const CMS_CTX *cms_ctx)
+                                        const CMS_CTX *cms_ctx, int auth)
 {
     BIO *b;
     EVP_CIPHER_CTX *ctx;
@@ -110,6 +110,9 @@ BIO *ossl_cms_EncryptedContent_init_bio(CMS_EncryptedContentInfo *ec,
                 ERR_raise(ERR_LIB_CMS, CMS_R_CIPHER_AEAD_SET_TAG_ERROR);
                 goto err;
             }
+        } else if (auth) {
+            ERR_raise(ERR_LIB_CMS, CMS_R_UNSUPPORTED_CONTENT_ENCRYPTION_ALGORITHM);
+            goto err;
         }
     }
     len = EVP_CIPHER_CTX_get_key_length(ctx);
@@ -254,5 +257,5 @@ BIO *ossl_cms_EncryptedData_init_bio(const CMS_ContentInfo *cms)
     if (enc->encryptedContentInfo->cipher && enc->unprotectedAttrs)
         enc->version = 2;
     return ossl_cms_EncryptedContent_init_bio(enc->encryptedContentInfo,
-                                              ossl_cms_get0_cmsctx(cms));
+                                              ossl_cms_get0_cmsctx(cms), 0);
 }
