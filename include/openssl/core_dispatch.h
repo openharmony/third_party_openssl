@@ -18,6 +18,13 @@
 extern "C" {
 # endif
 
+/*
+ * Generic function pointer for provider method arrays, or other contexts where
+ * functions of various signatures must occupy a common slot in an array of
+ * structures.
+ */
+typedef void (*OSSL_FUNC)(void);
+
 /*-
  * Identities
  * ----------
@@ -935,6 +942,16 @@ OSSL_CORE_MAKE_FUNC(int, store_close, (void *loaderctx))
 OSSL_CORE_MAKE_FUNC(int, store_export_object,
                     (void *loaderctx, const void *objref, size_t objref_sz,
                      OSSL_CALLBACK *export_cb, void *export_cbarg))
+
+# define OSSL_FUNC_SIGNATURE_SIGN_MESSAGE_INIT \
+    OSSL_FUNC_SIGNATURE_SIGN_INIT
+# define OSSL_FUNC_SIGNATURE_VERIFY_MESSAGE_INIT \
+    OSSL_FUNC_SIGNATURE_VERIFY_INIT
+
+OSSL_CORE_MAKE_FUNC(int, signature_sign_message_init,
+                    (void *ctx, void *provkey, const OSSL_PARAM params[]))
+OSSL_CORE_MAKE_FUNC(int, signature_verify_message_init,
+                    (void *ctx, void *provkey, const OSSL_PARAM params[]))
 
 # ifdef __cplusplus
 }

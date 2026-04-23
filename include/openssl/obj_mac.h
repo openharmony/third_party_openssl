@@ -3198,6 +3198,38 @@
 #define NID_RSA_SHA3_512                1119
 #define OBJ_RSA_SHA3_512                OBJ_sigAlgs,16L
 
+#define SN_ML_DSA_44            "id-ml-dsa-44"
+#define LN_ML_DSA_44            "ML-DSA-44"
+#define NID_ML_DSA_44           1250
+#define OBJ_ML_DSA_44           OBJ_sigAlgs,17L
+
+#define SN_ML_DSA_65            "id-ml-dsa-65"
+#define LN_ML_DSA_65            "ML-DSA-65"
+#define NID_ML_DSA_65           1251
+#define OBJ_ML_DSA_65           OBJ_sigAlgs,18L
+
+#define SN_ML_DSA_87            "id-ml-dsa-87"
+#define LN_ML_DSA_87            "ML-DSA-87"
+#define NID_ML_DSA_87           1252
+#define OBJ_ML_DSA_87           OBJ_sigAlgs,19L
+
+#define OBJ_nistKems            OBJ_nistAlgorithms,4L
+
+#define SN_ML_KEM_512           "id-alg-ml-kem-512"
+#define LN_ML_KEM_512           "ML-KEM-512"
+#define NID_ML_KEM_512          1253
+#define OBJ_ML_KEM_512          OBJ_nistKems,1L
+
+#define SN_ML_KEM_768           "id-alg-ml-kem-768"
+#define LN_ML_KEM_768           "ML-KEM-768"
+#define NID_ML_KEM_768          1254
+#define OBJ_ML_KEM_768          OBJ_nistKems,2L
+
+#define SN_ML_KEM_1024          "id-alg-ml-kem-1024"
+#define LN_ML_KEM_1024          "ML-KEM-1024"
+#define NID_ML_KEM_1024         1255
+#define OBJ_ML_KEM_1024         OBJ_nistKems,3L
+
 #define SN_hold_instruction_code                "holdInstructionCode"
 #define LN_hold_instruction_code                "Hold Instruction Code"
 #define NID_hold_instruction_code               430

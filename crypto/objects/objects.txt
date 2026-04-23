@@ -1036,6 +1036,9 @@ sigAlgs 13	: id-rsassa-pkcs1-v1_5-with-sha3-224	: RSA-SHA3-224
 sigAlgs 14	: id-rsassa-pkcs1-v1_5-with-sha3-256	: RSA-SHA3-256
 sigAlgs 15	: id-rsassa-pkcs1-v1_5-with-sha3-384	: RSA-SHA3-384
 sigAlgs 16	: id-rsassa-pkcs1-v1_5-with-sha3-512	: RSA-SHA3-512
+sigAlgs 17      : id-ml-dsa-44      : ML-DSA-44
+sigAlgs 18      : id-ml-dsa-65      : ML-DSA-65
+sigAlgs 19      : id-ml-dsa-87      : ML-DSA-87
 
 # Hold instruction CRL entry extension
 !Cname hold-instruction-code
@@ -1746,3 +1749,9 @@ dstu4145le 2 9 : uacurve9 : DSTU curve 9
                             : AES-128-SIV  : aes-128-siv
                             : AES-192-SIV  : aes-192-siv
                             : AES-256-SIV  : aes-256-siv
+
+# ML-KEM OIDs (FIPS 203)
+!Alias nistKems nistAlgorithms 4
+nistKems 1 : id-alg-ml-kem-512  : ML-KEM-512
+nistKems 2 : id-alg-ml-kem-768  : ML-KEM-768
+nistKems 3 : id-alg-ml-kem-1024 : ML-KEM-1024

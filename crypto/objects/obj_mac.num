@@ -1247,3 +1247,9 @@ id_ct_geofeedCSVwithCRLF		1246
 id_ct_signedChecklist		1247
 sm4_gcm		1248
 sm4_ccm		1249
+ML_DSA_44		1250
+ML_DSA_65		1251
+ML_DSA_87		1252
+ML_KEM_512		1253
+ML_KEM_768		1254
+ML_KEM_1024		1255

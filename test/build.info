@@ -796,6 +796,24 @@ IF[{- !$disabled{tests} -}]
     SOURCE[algorithmid_test]=algorithmid_test.c
     INCLUDE[algorithmid_test]=../include ../apps/include
     DEPEND[algorithmid_test]=../libcrypto.a libtestutil.a
+
+    IF[{- !$disabled{"ml-kem"} -}]
+      PROGRAMS{noinst}=ml_kem_internal_test ml_kem_evp_extra_test
+      SOURCE[ml_kem_internal_test]=ml_kem_internal_test.c
+      INCLUDE[ml_kem_internal_test]=.. ../include ../apps/include
+      DEPEND[ml_kem_internal_test]=../libcrypto.a libtestutil.a
+
+      SOURCE[ml_kem_evp_extra_test]=ml_kem_evp_extra_test.c
+      INCLUDE[ml_kem_evp_extra_test]=.. ../include ../apps/include
+      DEPEND[ml_kem_evp_extra_test]=../libcrypto.a libtestutil.a
+    ENDIF
+
+    IF[{- !$disabled{"ml-dsa"} -}]
+      PROGRAMS{noinst}=ml_dsa_test
+      SOURCE[ml_dsa_test]=ml_dsa_test.c
+      INCLUDE[ml_dsa_test]=.. ../include ../apps/include
+      DEPEND[ml_dsa_test]=../libcrypto.a libtestutil.a
+    ENDIF
   ENDIF
 
   PROGRAMS{noinst}=asn1_time_test

@@ -18,3 +18,18 @@ IF[{- !$disabled{ec} -}]
   SOURCE[$ENCODER_GOAL]=encode_key2blob.c
 ENDIF
 DEPEND[encode_key2any.o]=../../common/include/prov/der_rsa.h
+
+IF[{- !$disabled{"ml-kem"} || !$disabled{"ml-dsa"} -}]
+  SOURCE[$ENCODER_GOAL]=ml_common_codecs.c
+  SOURCE[$DECODER_GOAL]=ml_common_codecs.c
+ENDIF
+
+IF[{- !$disabled{"ml-kem"} -}]
+  SOURCE[$ENCODER_GOAL]=ml_kem_codecs.c
+  SOURCE[$DECODER_GOAL]=ml_kem_codecs.c
+ENDIF
+
+IF[{- !$disabled{"ml-dsa"} -}]
+  SOURCE[$ENCODER_GOAL]=ml_dsa_codecs.c
+  SOURCE[$DECODER_GOAL]=ml_dsa_codecs.c
+ENDIF

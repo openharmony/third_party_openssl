@@ -79,6 +79,9 @@
 # define EVP_PKEY_ED25519 NID_ED25519
 # define EVP_PKEY_X448 NID_X448
 # define EVP_PKEY_ED448 NID_ED448
+# define EVP_PKEY_ML_DSA_44 NID_ML_DSA_44
+# define EVP_PKEY_ML_DSA_65 NID_ML_DSA_65
+# define EVP_PKEY_ML_DSA_87 NID_ML_DSA_87
 /* Special indicator that the object is uniquely provider side */
 # define EVP_PKEY_KEYMGMT -1
 
@@ -1897,6 +1900,11 @@ int EVP_PKEY_verify_init_ex(EVP_PKEY_CTX *ctx, const OSSL_PARAM params[]);
 int EVP_PKEY_verify(EVP_PKEY_CTX *ctx,
                     const unsigned char *sig, size_t siglen,
                     const unsigned char *tbs, size_t tbslen);
+
+#define EVP_PKEY_sign_message_init(ctx, sig_alg, params) \
+    EVP_PKEY_sign_init_ex(ctx, params)
+#define EVP_PKEY_verify_message_init(ctx, sig_alg, params) \
+    EVP_PKEY_verify_init_ex(ctx, params)
 int EVP_PKEY_verify_recover_init(EVP_PKEY_CTX *ctx);
 int EVP_PKEY_verify_recover_init_ex(EVP_PKEY_CTX *ctx,
                                     const OSSL_PARAM params[]);
