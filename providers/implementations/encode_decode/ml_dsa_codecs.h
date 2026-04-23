@@ -11,7 +11,7 @@
 #define PROV_ML_DSA_CODECS_H
 #pragma once
 
-#ifndef OPENSSL_NO_ML_DSA
+#ifdef OPENSSL_ML_DSA
 #include <openssl/e_os2.h>
 #include "crypto/ml_dsa.h"
 #include "prov/provider_ctx.h"
@@ -32,5 +32,5 @@ __owur
     ossl_ml_dsa_i2d_prvkey(const ML_DSA_KEY *key, unsigned char **out,
         PROV_CTX *provctx);
 
-#endif /* OPENSSL_NO_ML_DSA */
+#endif /* OPENSSL_ML_DSA */
 #endif /* PROV_ML_DSA_CODECS_H */

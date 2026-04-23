@@ -559,6 +559,8 @@ our %disabled = ( # "what"         => "comment"
                   "weak-ssl-ciphers"    => "default",
                   "zlib"                => "default",
                   "zlib-dynamic"        => "default",
+                  "ml-kem"              => "default",
+                  "ml-dsa"              => "default",
                 );
 
 # Note: => pair form used for aesthetics, not to truly make a hash table
@@ -1811,8 +1813,12 @@ foreach my $what (sort keys %disabled) {
         $skipdir = "ripemd" if $what eq "rmd160";
         $skipdir = "whrlpool" if $what eq "whirlpool";
 
-        my $macro = $disabled_info{$what}->{macro} = "OPENSSL_NO_$WHAT";
-        push @{$config{openssl_feature_defines}}, $macro;
+        if ($what eq 'ml-kem' || $what eq 'ml-dsa') {
+            $disabled_info{$what}->{macro} = "OPENSSL_NO_$WHAT";
+        } else {
+            my $macro = $disabled_info{$what}->{macro} = "OPENSSL_NO_$WHAT";
+            push @{$config{openssl_feature_defines}}, $macro;
+        }
 
         $skipdir{engines} = $what if $what eq 'engine';
         $skipdir{"crypto/$skipdir"} = $what
@@ -1824,6 +1830,14 @@ if ($disabled{"dynamic-engine"}) {
     push @{$config{openssl_feature_defines}}, "OPENSSL_NO_DYNAMIC_ENGINE";
 } else {
     push @{$config{openssl_feature_defines}}, "OPENSSL_NO_STATIC_ENGINE";
+}
+
+# Positive macros for ML-KEM and ML-DSA (disabled by default, opt-in via enable-ml-kem/enable-ml-dsa)
+if (!$disabled{"ml-kem"}) {
+    push @{$config{openssl_feature_defines}}, "OPENSSL_ML_KEM";
+}
+if (!$disabled{"ml-dsa"}) {
+    push @{$config{openssl_feature_defines}}, "OPENSSL_ML_DSA";
 }
 
 # If we use the unified build, collect information from build.info files

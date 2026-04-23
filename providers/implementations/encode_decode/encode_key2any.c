@@ -35,10 +35,10 @@
 #include "prov/provider_ctx.h"
 #include "prov/der_rsa.h"
 #include "endecoder_local.h"
-#ifndef OPENSSL_NO_ML_KEM
+#ifdef OPENSSL_ML_KEM
 #include "ml_kem_codecs.h"
 #endif
-#ifndef OPENSSL_NO_ML_DSA
+#ifdef OPENSSL_ML_DSA
 #include "ml_dsa_codecs.h"
 #endif
 
@@ -826,7 +826,7 @@ static int ecx_pki_priv_to_der(const void *vecxkey, unsigned char **pder)
 
 /* ---------------------------------------------------------------------- */
 
-#ifndef OPENSSL_NO_ML_KEM
+#ifdef OPENSSL_ML_KEM
 static int ml_kem_spki_pub_to_der(const void *vkey, unsigned char **pder)
 {
     return ossl_ml_kem_i2d_pubkey((const ML_KEM_KEY *)vkey, pder);
@@ -852,7 +852,7 @@ static int ml_kem_pki_priv_to_der(const void *vkey, unsigned char **pder)
 # define ml_kem_1024_pem_type    "ML-KEM-1024"
 #endif
 
-#ifndef OPENSSL_NO_ML_DSA
+#ifdef OPENSSL_ML_DSA
 static int ml_dsa_spki_pub_to_der(const void *vkey, unsigned char **pder)
 {
     return ossl_ml_dsa_i2d_pubkey((const ML_DSA_KEY *)vkey, pder);
@@ -1478,7 +1478,7 @@ MAKE_ENCODER(x448, ecx, EVP_PKEY_ED448, PrivateKeyInfo, pem);
 MAKE_ENCODER(x448, ecx, EVP_PKEY_ED448, SubjectPublicKeyInfo, der);
 MAKE_ENCODER(x448, ecx, EVP_PKEY_ED448, SubjectPublicKeyInfo, pem);
 #endif
-#ifndef OPENSSL_NO_ML_KEM
+#ifdef OPENSSL_ML_KEM
 MAKE_ENCODER(ml_kem_512, ml_kem, EVP_PKEY_ML_KEM_512, EncryptedPrivateKeyInfo, der);
 MAKE_ENCODER(ml_kem_512, ml_kem, EVP_PKEY_ML_KEM_512, EncryptedPrivateKeyInfo, pem);
 MAKE_ENCODER(ml_kem_512, ml_kem, EVP_PKEY_ML_KEM_512, PrivateKeyInfo, der);
@@ -1501,7 +1501,7 @@ MAKE_ENCODER(ml_kem_1024, ml_kem, EVP_PKEY_ML_KEM_1024, SubjectPublicKeyInfo, de
 MAKE_ENCODER(ml_kem_1024, ml_kem, EVP_PKEY_ML_KEM_1024, SubjectPublicKeyInfo, pem);
 #endif
 
-#ifndef OPENSSL_NO_ML_DSA
+#ifdef OPENSSL_ML_DSA
 MAKE_ENCODER(ml_dsa_44, ml_dsa, EVP_PKEY_ML_DSA_44, EncryptedPrivateKeyInfo, der);
 MAKE_ENCODER(ml_dsa_44, ml_dsa, EVP_PKEY_ML_DSA_44, EncryptedPrivateKeyInfo, pem);
 MAKE_ENCODER(ml_dsa_44, ml_dsa, EVP_PKEY_ML_DSA_44, PrivateKeyInfo, der);

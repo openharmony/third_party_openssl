@@ -472,7 +472,7 @@ extern const OSSL_DISPATCH ossl_x448_to_SubjectPublicKeyInfo_pem_encoder_functio
 extern const OSSL_DISPATCH ossl_x448_to_OSSL_current_der_encoder_functions[];
 extern const OSSL_DISPATCH ossl_x448_to_text_encoder_functions[];
 
-#ifndef OPENSSL_NO_ML_KEM
+#ifdef OPENSSL_ML_KEM
 extern const OSSL_DISPATCH ossl_ml_kem_512_to_EncryptedPrivateKeyInfo_der_encoder_functions[];
 extern const OSSL_DISPATCH ossl_ml_kem_512_to_EncryptedPrivateKeyInfo_pem_encoder_functions[];
 extern const OSSL_DISPATCH ossl_ml_kem_512_to_PrivateKeyInfo_der_encoder_functions[];
@@ -498,7 +498,7 @@ extern const OSSL_DISPATCH ossl_ml_kem_1024_to_SubjectPublicKeyInfo_pem_encoder_
 extern const OSSL_DISPATCH ossl_ml_kem_1024_to_text_encoder_functions[];
 #endif
 
-#ifndef OPENSSL_NO_ML_DSA
+#ifdef OPENSSL_ML_DSA
 extern const OSSL_DISPATCH ossl_ml_dsa_44_to_EncryptedPrivateKeyInfo_der_encoder_functions[];
 extern const OSSL_DISPATCH ossl_ml_dsa_44_to_EncryptedPrivateKeyInfo_pem_encoder_functions[];
 extern const OSSL_DISPATCH ossl_ml_dsa_44_to_PrivateKeyInfo_der_encoder_functions[];

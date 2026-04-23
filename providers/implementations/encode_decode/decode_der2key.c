@@ -542,7 +542,7 @@ static void rsa_adjust(void *key, struct der2key_ctx_st *ctx)
 #define rsapss_check                    rsa_check
 #define rsapss_adjust                   rsa_adjust
 
-#ifndef OPENSSL_NO_ML_DSA
+#ifdef OPENSSL_ML_DSA
 static void *ml_dsa_44_d2i_PKCS8(void **key, const unsigned char **der, long der_len, struct der2key_ctx_st *ctx)
 {
     return ossl_ml_dsa_d2i_PKCS8(*der, (int)der_len, EVP_PKEY_ML_DSA_44, ctx->provctx, NULL);
@@ -599,7 +599,7 @@ static void *ml_dsa_87_d2i_PUBKEY(void **key, const unsigned char **der, long de
 # define ml_dsa_87_adjust               NULL
 #endif
 
-#ifndef OPENSSL_NO_ML_KEM
+#ifdef OPENSSL_ML_KEM
 static void *ml_kem_512_d2i_PKCS8(void **key, const unsigned char **der, long der_len, struct der2key_ctx_st *ctx)
 {
     return ossl_ml_kem_d2i_PKCS8(*der, (int)der_len, EVP_PKEY_ML_KEM_512, ctx->provctx, NULL);
@@ -909,7 +909,7 @@ MAKE_DECODER("RSA", rsa, rsa, type_specific_keypair);
 MAKE_DECODER("RSA", rsa, rsa, RSA);
 MAKE_DECODER("RSA-PSS", rsapss, rsapss, PrivateKeyInfo);
 MAKE_DECODER("RSA-PSS", rsapss, rsapss, SubjectPublicKeyInfo);
-#ifndef OPENSSL_NO_ML_DSA
+#ifdef OPENSSL_ML_DSA
 MAKE_DECODER("ML-DSA-44", ml_dsa_44, ml_dsa_44, PrivateKeyInfo);
 MAKE_DECODER("ML-DSA-44", ml_dsa_44, ml_dsa_44, SubjectPublicKeyInfo);
 MAKE_DECODER("ML-DSA-65", ml_dsa_65, ml_dsa_65, PrivateKeyInfo);
@@ -917,7 +917,7 @@ MAKE_DECODER("ML-DSA-65", ml_dsa_65, ml_dsa_65, SubjectPublicKeyInfo);
 MAKE_DECODER("ML-DSA-87", ml_dsa_87, ml_dsa_87, PrivateKeyInfo);
 MAKE_DECODER("ML-DSA-87", ml_dsa_87, ml_dsa_87, SubjectPublicKeyInfo);
 #endif
-#ifndef OPENSSL_NO_ML_KEM
+#ifdef OPENSSL_ML_KEM
 MAKE_DECODER("ML-KEM-512", ml_kem_512, ml_kem_512, PrivateKeyInfo);
 MAKE_DECODER("ML-KEM-512", ml_kem_512, ml_kem_512, SubjectPublicKeyInfo);
 MAKE_DECODER("ML-KEM-768", ml_kem_768, ml_kem_768, PrivateKeyInfo);

@@ -71,7 +71,7 @@ DECODER_w_structure("SM2", der, PrivateKeyInfo, sm2, no),
 DECODER_w_structure("SM2", der, SubjectPublicKeyInfo, sm2, no),
 # endif
 #endif
-#ifndef OPENSSL_NO_ML_KEM
+#ifdef OPENSSL_ML_KEM
 DECODER_w_structure("ML-KEM-512", der, PrivateKeyInfo, ml_kem_512, yes),
 DECODER_w_structure("ML-KEM-512", der, SubjectPublicKeyInfo, ml_kem_512, yes),
 DECODER_w_structure("ML-KEM-768", der, PrivateKeyInfo, ml_kem_768, yes),
@@ -87,7 +87,7 @@ DECODER_w_structure("RSA-PSS", der, PrivateKeyInfo, rsapss, yes),
 DECODER_w_structure("RSA-PSS", der, SubjectPublicKeyInfo, rsapss, yes),
 DECODER("RSA", msblob, rsa, yes),
 DECODER("RSA", pvk, rsa, yes),
-#ifndef OPENSSL_NO_ML_DSA
+#ifdef OPENSSL_ML_DSA
 DECODER_w_structure("ML-DSA-44", der, PrivateKeyInfo, ml_dsa_44, yes),
 DECODER_w_structure("ML-DSA-65", der, PrivateKeyInfo, ml_dsa_65, yes),
 DECODER_w_structure("ML-DSA-87", der, PrivateKeyInfo, ml_dsa_87, yes),

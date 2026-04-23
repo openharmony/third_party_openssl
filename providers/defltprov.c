@@ -395,7 +395,7 @@ static const OSSL_ALGORITHM deflt_signature[] = {
 #ifndef OPENSSL_NO_CMAC
     { PROV_NAMES_CMAC, "provider=default", ossl_mac_legacy_cmac_signature_functions },
 #endif
-#ifndef OPENSSL_NO_ML_DSA
+#ifdef OPENSSL_ML_DSA
     { PROV_NAMES_ML_DSA_44, "provider=default", ossl_ml_dsa_44_signature_functions },
     { PROV_NAMES_ML_DSA_65, "provider=default", ossl_ml_dsa_65_signature_functions },
     { PROV_NAMES_ML_DSA_87, "provider=default", ossl_ml_dsa_87_signature_functions },
@@ -413,7 +413,7 @@ static const OSSL_ALGORITHM deflt_asym_cipher[] = {
 
 static const OSSL_ALGORITHM deflt_asym_kem[] = {
     { PROV_NAMES_RSA, "provider=default", ossl_rsa_asym_kem_functions },
-#ifndef OPENSSL_NO_ML_KEM
+#ifdef OPENSSL_ML_KEM
     { PROV_NAMES_ML_KEM_512, "provider=default", ossl_ml_kem_asym_kem_functions },
     { PROV_NAMES_ML_KEM_768, "provider=default", ossl_ml_kem_asym_kem_functions },
     { PROV_NAMES_ML_KEM_1024, "provider=default", ossl_ml_kem_asym_kem_functions },
@@ -470,7 +470,7 @@ static const OSSL_ALGORITHM deflt_keymgmt[] = {
     { PROV_NAMES_SM2, "provider=default", ossl_sm2_keymgmt_functions,
       PROV_DESCS_SM2 },
 #endif
-#ifndef OPENSSL_NO_ML_KEM
+#ifdef OPENSSL_ML_KEM
     { PROV_NAMES_ML_KEM_512, "provider=default", ossl_ml_kem_512_keymgmt_functions,
       PROV_DESCS_ML_KEM_512 },
     { PROV_NAMES_ML_KEM_768, "provider=default", ossl_ml_kem_768_keymgmt_functions,
@@ -478,7 +478,7 @@ static const OSSL_ALGORITHM deflt_keymgmt[] = {
     { PROV_NAMES_ML_KEM_1024, "provider=default", ossl_ml_kem_1024_keymgmt_functions,
       PROV_DESCS_ML_KEM_1024 },
 #endif
-#ifndef OPENSSL_NO_ML_DSA
+#ifdef OPENSSL_ML_DSA
     { PROV_NAMES_ML_DSA_44, "provider=default", ossl_ml_dsa_44_keymgmt_functions,
       PROV_DESCS_ML_DSA_44 },
     { PROV_NAMES_ML_DSA_65, "provider=default", ossl_ml_dsa_65_keymgmt_functions,

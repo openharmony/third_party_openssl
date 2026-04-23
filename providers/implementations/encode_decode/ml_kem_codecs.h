@@ -11,7 +11,7 @@
 #define PROV_ML_KEM_CODECS_H
 #pragma once
 
-#ifndef OPENSSL_NO_ML_KEM
+#ifdef OPENSSL_ML_KEM
 #include <openssl/e_os2.h>
 #include "crypto/ml_kem.h"
 #include "prov/provider_ctx.h"
@@ -32,5 +32,5 @@ __owur
     ossl_ml_kem_i2d_prvkey(const ML_KEM_KEY *key, unsigned char **out,
         PROV_CTX *provctx);
 
-#endif /* OPENSSL_NO_ML_KEM */
+#endif /* OPENSSL_ML_KEM */
 #endif /* PROV_ML_KEM_CODECS_H */
