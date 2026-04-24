@@ -214,6 +214,12 @@ static const ERR_STRING_DATA PROV_str_reasons[] = {
     "xts data unit is too large"},
     {ERR_PACK(ERR_LIB_PROV, 0, PROV_R_XTS_DUPLICATED_KEYS),
     "xts duplicated keys"},
+    {ERR_PACK(ERR_LIB_PROV, 0, PROV_R_UNEXPECTED_KEY_PARAMETERS),
+    "unexpected key parameters"},
+    {ERR_PACK(ERR_LIB_PROV, 0, PROV_R_ML_KEM_NO_FORMAT),
+    "no ml-kem format"},
+    {ERR_PACK(ERR_LIB_PROV, 0, PROV_R_ML_DSA_NO_FORMAT),
+    "no ml-dsa format"},
     {0, NULL}
 };
 

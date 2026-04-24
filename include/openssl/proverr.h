@@ -144,5 +144,10 @@
 # define PROV_R_XOF_DIGESTS_NOT_ALLOWED                   183
 # define PROV_R_XTS_DATA_UNIT_IS_TOO_LARGE                148
 # define PROV_R_XTS_DUPLICATED_KEYS                       149
+# define PROV_R_ML_DSA_NO_FORMAT                          245
+# define PROV_R_ML_KEM_NO_FORMAT                          246
+# define PROV_R_NULL_LENGTH_POINTER                       247
+# define PROV_R_NULL_OUTPUT_BUFFER                        248
+# define PROV_R_UNEXPECTED_KEY_PARAMETERS                 249
 
 #endif

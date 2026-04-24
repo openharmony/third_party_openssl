@@ -2,5 +2,10 @@
 # switch each to the Legacy provider when needed.
 
 $RSA_KEM_GOAL=../../libdefault.a ../../libfips.a
+$ML_KEM_GOAL=../../libdefault.a ../../libfips.a
 
 SOURCE[$RSA_KEM_GOAL]=rsa_kem.c
+
+IF[{- !$disabled{'ml-kem'} -}]
+  SOURCE[$ML_KEM_GOAL]=ml_kem_kem.c
+ENDIF

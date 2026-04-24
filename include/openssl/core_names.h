@@ -451,6 +451,11 @@ extern "C" {
 #define OSSL_SIGNATURE_PARAM_MGF1_PROPERTIES    \
     OSSL_PKEY_PARAM_MGF1_PROPERTIES
 #define OSSL_SIGNATURE_PARAM_DIGEST_SIZE        OSSL_PKEY_PARAM_DIGEST_SIZE
+#define OSSL_SIGNATURE_PARAM_CONTEXT_STRING     "context-string"
+#define OSSL_SIGNATURE_PARAM_TEST_ENTROPY       "test-entropy"
+#define OSSL_SIGNATURE_PARAM_DETERMINISTIC      "deterministic"
+#define OSSL_SIGNATURE_PARAM_MESSAGE_ENCODING   "message-encoding"
+#define OSSL_SIGNATURE_PARAM_MU                 "mu"
 
 /* Asym cipher parameters */
 #define OSSL_ASYM_CIPHER_PARAM_DIGEST                   OSSL_PKEY_PARAM_DIGEST
@@ -504,6 +509,22 @@ extern "C" {
 
 /* OSSL_KEM_PARAM_OPERATION values */
 #define OSSL_KEM_PARAM_OPERATION_RSASVE     "RSASVE"
+#define OSSL_KEM_PARAM_IKME                 "ikme"
+
+/* ML-KEM parameters */
+#define OSSL_PKEY_PARAM_ML_KEM_SEED             "seed"
+#define OSSL_PKEY_PARAM_ML_KEM_INPUT_FORMATS    "input-formats"
+#define OSSL_PKEY_PARAM_ML_KEM_OUTPUT_FORMATS   "output-formats"
+#define OSSL_PKEY_PARAM_ML_KEM_IMPORT_PCT_TYPE  "import-pct-type"
+#define OSSL_PKEY_PARAM_ML_KEM_RETAIN_SEED      "retain-seed"
+#define OSSL_PKEY_PARAM_ML_KEM_PREFER_SEED      "prefer-seed"
+
+/* ML-DSA parameters */
+#define OSSL_PKEY_PARAM_ML_DSA_SEED             "seed"
+#define OSSL_PKEY_PARAM_ML_DSA_INPUT_FORMATS    "input-formats"
+#define OSSL_PKEY_PARAM_ML_DSA_OUTPUT_FORMATS   "output-formats"
+#define OSSL_PKEY_PARAM_ML_DSA_RETAIN_SEED      "retain-seed"
+#define OSSL_PKEY_PARAM_ML_DSA_PREFER_SEED      "prefer-seed"
 
 /* Capabilities */
 

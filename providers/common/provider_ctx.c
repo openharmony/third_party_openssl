@@ -8,6 +8,7 @@
  */
 
 #include <stdlib.h>
+#include <string.h>
 #include "prov/provider_ctx.h"
 #include "prov/bio.h"
 
@@ -58,4 +59,29 @@ BIO_METHOD *ossl_prov_ctx_get0_core_bio_method(PROV_CTX *ctx)
     if (ctx == NULL)
         return NULL;
     return ctx->corebiometh;
+}
+
+const char *
+ossl_prov_ctx_get_param(PROV_CTX *ctx, const char *name, const char *defval)
+{
+    return defval;
+}
+
+int ossl_prov_ctx_get_bool_param(PROV_CTX *ctx, const char *name, int defval)
+{
+    const char *val = ossl_prov_ctx_get_param(ctx, name, NULL);
+
+    if (val != NULL) {
+        if ((strcmp(val, "1") == 0)
+            || (OPENSSL_strcasecmp(val, "yes") == 0)
+            || (OPENSSL_strcasecmp(val, "true") == 0)
+            || (OPENSSL_strcasecmp(val, "on") == 0))
+            return 1;
+        else if ((strcmp(val, "0") == 0)
+            || (OPENSSL_strcasecmp(val, "no") == 0)
+            || (OPENSSL_strcasecmp(val, "false") == 0)
+            || (OPENSSL_strcasecmp(val, "off") == 0))
+            return 0;
+    }
+    return defval;
 }

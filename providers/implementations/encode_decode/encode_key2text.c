@@ -31,6 +31,12 @@
 #include "prov/bio.h"
 #include "prov/implementations.h"
 #include "endecoder_local.h"
+#ifdef OPENSSL_ML_KEM
+#include "ml_kem_codecs.h"
+#endif
+#ifdef OPENSSL_ML_DSA
+#include "ml_dsa_codecs.h"
+#endif
 
 DEFINE_SPECIAL_STACK_OF_CONST(BIGNUM_const, BIGNUM)
 
@@ -638,6 +644,30 @@ static int ecx_to_text(BIO *out, const void *key, int selection)
 
 /* ---------------------------------------------------------------------- */
 
+#ifdef OPENSSL_ML_KEM
+static int ml_kem_to_text(BIO *out, const void *key, int selection)
+{
+    return ossl_ml_kem_key_to_text(out, (const ML_KEM_KEY *)key, selection);
+}
+
+# define ml_kem_512_input_type  "ML-KEM-512"
+# define ml_kem_768_input_type  "ML-KEM-768"
+# define ml_kem_1024_input_type "ML-KEM-1024"
+#endif
+
+#ifdef OPENSSL_ML_DSA
+static int ml_dsa_to_text(BIO *out, const void *key, int selection)
+{
+    return ossl_ml_dsa_key_to_text(out, (const ML_DSA_KEY *)key, selection);
+}
+
+# define ml_dsa_44_input_type   "ML-DSA-44"
+# define ml_dsa_65_input_type   "ML-DSA-65"
+# define ml_dsa_87_input_type   "ML-DSA-87"
+#endif
+
+/* ---------------------------------------------------------------------- */
+
 static int rsa_to_text(BIO *out, const void *key, int selection)
 {
     const RSA *rsa = key;
@@ -887,3 +917,13 @@ MAKE_TEXT_ENCODER(x448, ecx);
 #endif
 MAKE_TEXT_ENCODER(rsa, rsa);
 MAKE_TEXT_ENCODER(rsapss, rsa);
+#ifdef OPENSSL_ML_KEM
+MAKE_TEXT_ENCODER(ml_kem_512, ml_kem);
+MAKE_TEXT_ENCODER(ml_kem_768, ml_kem);
+MAKE_TEXT_ENCODER(ml_kem_1024, ml_kem);
+#endif
+#ifdef OPENSSL_ML_DSA
+MAKE_TEXT_ENCODER(ml_dsa_44, ml_dsa);
+MAKE_TEXT_ENCODER(ml_dsa_65, ml_dsa);
+MAKE_TEXT_ENCODER(ml_dsa_87, ml_dsa);
+#endif
