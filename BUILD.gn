@@ -322,6 +322,7 @@ action("openssl_build_all_generated") {
   outputs += libdefault_build_all_generated_selected_platform_sources
   outputs += libcrypto_build_all_generated_selected_platform_sources
   outputs += [ "${build_all_generated_path}/apps/progs.c" ]
+  outputs += [ "${build_all_generated_path}/include/openssl/configuration.h" ]
   if (openssl_selected_platform == "mingw64") {
     outputs += [ "${build_all_generated_path}/apps/openssl.rc" ]
   }
