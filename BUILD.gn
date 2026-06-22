@@ -1954,6 +1954,10 @@ if (current_os == "ios") {
   }
 }
 
+config("openssl_app_config") {
+  cflags = [ "-Os" ]
+}
+
 ohos_static_library("libapps") {
   # 升级修改适配检查点28 libapps 源码列表
   sources = [
@@ -1982,7 +1986,10 @@ ohos_static_library("libapps") {
     subsystem_name = "thirdparty"
     part_name = "openssl"
   }
-  configs = [ ":crypto_config_private" ]
+  configs = [
+    ":crypto_config_private",
+    ":openssl_app_config",
+  ]
   deps = [ ":openssl_build_all_generated" ]
 }
 
@@ -2067,7 +2074,10 @@ ohos_executable("openssl") {
     subsystem_name = "thirdparty"
     part_name = "openssl"
   }
-  configs = [ ":crypto_config_private" ]
+  configs = [
+    ":crypto_config_private",
+    ":openssl_app_config",
+  ]
 }
 # 升级修改适配检查点 汇总
 #
