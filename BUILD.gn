@@ -608,6 +608,7 @@ if (openssl_selected_platform == "linux-armv4") {
   crypto_config_current_platform_cflags += crypto_config_linux_armv4_cflags
 } else if (openssl_selected_platform == "linux-aarch64") {
   crypto_config_current_platform_cflags += crypto_config_linux_aarch64_cflags
+  # Adapt to the newly added L1 arm64 platform development board and fix the assembly asm compilation issue
   if (device_name == "hispark_aifly") {
     crypto_config_current_platform_cflags += [ "-DOPENSSL_NO_INLINE_ASM" ]
   }
