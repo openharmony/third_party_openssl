@@ -15,6 +15,9 @@
 
 #include <stdio.h>
 #include <string.h>
+#if defined(__arm__) || defined(__arm) || defined(__aarch64__)
+#include <dlfcn.h>
+#endif
 #include "internal/cryptlib.h"
 #include <openssl/evp.h>
 #include <openssl/objects.h>
@@ -30,6 +33,10 @@
 
 #if !defined(FIPS_MODULE)
 # include "crypto/asn1.h"
+
+#if defined(__arm__) || defined(__arm) || defined(__aarch64__)
+typedef void (*HcfHistogramAddBooleanFunc)(const char *name, int32_t success);
+#endif
 
 int EVP_CIPHER_param_to_asn1(EVP_CIPHER_CTX *c, ASN1_TYPE *type)
 {
@@ -399,9 +406,37 @@ int EVP_CIPHER_impl_ctx_size(const EVP_CIPHER *e)
     return e->ctx_size;
 }
 
+#if defined(__arm__) || defined(__arm) || defined(__aarch64__)
+static void EvpCipherMetrics()
+{
+    void *handle = dlopen("/system/lib64/platformsdk/libcrypto_framework_lib.z.so", RTLD_LAZY);
+    if (handle == NULL) {
+        return;
+    }
+
+    HcfHistogramAddBooleanFunc apiReport = (HcfHistogramAddBooleanFunc)dlsym(handle, "HcfHistogramAddBoolean");
+    if (apiReport != NULL) {
+        apiReport("cryptoFramework.createCipher", 1);
+    }
+
+    dlclose(handle);
+}
+#endif
+
 int EVP_Cipher(EVP_CIPHER_CTX *ctx, unsigned char *out,
                const unsigned char *in, unsigned int inl)
 {
+#if defined(__arm__) || defined(__arm) || defined(__aarch64__)
+    static int flag = 0;
+    if (flag == 0) {
+        int nid = ctx->cipher->nid;
+        if (nid == NID_aes_128_ocb || nid == NID_aes_192_ocb || nid == NID_aes_256_ocb) {
+            flag = 1;
+            EvpCipherMetrics();
+        }
+    }
+#endif
+    
     if (ctx->cipher->prov != NULL) {
         /*
          * If the provided implementation has a ccipher function, we use it,
