@@ -1772,6 +1772,9 @@ ohos_shared_library("libcrypto_shared") {
     configs += [ ":openssl_link_config" ]
     output_name = "libcrypto_openssl"
   }
+  if (current_os == "ohos") {
+    version_script = "openssl_lib.map"
+  }
   if (compatible_with_legacy_build_system) {
     subsystem_name = "security"
     part_name = "huks"
@@ -1918,6 +1921,9 @@ ohos_shared_library("libssl_shared") {
   } else {
     configs = [ ":openssl_link_config" ]
     output_name = "libssl_openssl"
+  }
+  if (current_os == "ohos") {
+    version_script = "openssl_lib.map"
   }
   if (compatible_with_legacy_build_system) {
     subsystem_name = "developtools"
