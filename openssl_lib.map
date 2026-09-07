@@ -16,8 +16,6 @@
     _CONF_get_string;
     _CONF_new_data;
     _CONF_new_section;
-    _fini;
-    _init;
     a2d_ASN1_OBJECT;
     a2i_ASN1_ENUMERATED;
     a2i_ASN1_INTEGER;
